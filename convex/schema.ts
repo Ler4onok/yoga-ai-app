@@ -9,6 +9,11 @@ export default defineSchema({
     clerkId: v.string(),
   }).index("by_clerk_id", ["clerkId"]),
 
+  asanas: defineTable({
+    name: v.string(),
+    level: v.string(),
+  }).index("by_level", ["level"]),
+
   plans: defineTable({
     userId: v.string(),
     name: v.string(),
