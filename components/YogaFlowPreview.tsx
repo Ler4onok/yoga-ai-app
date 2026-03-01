@@ -66,7 +66,7 @@ const IntegratedTimingSlider = ({
     <div className="space-y-6 pt-4">
       <div 
         ref={containerRef}
-        className="relative h-12 w-full bg-gray-100 rounded-2xl overflow-visible flex cursor-pointer select-none border-4 border-white shadow-inner"
+        className="relative h-12 w-full bg-gray-100/50 rounded-2xl overflow-visible flex cursor-pointer select-none border-4 border-white shadow-inner"
       >
         <div style={{ width: `${percentages.warmup}%` }} className="h-full bg-orange-400 transition-all duration-75 first:rounded-l-xl flex items-center justify-center text-[10px] font-black text-white uppercase tracking-tighter overflow-hidden">
           {percentages.warmup}%
@@ -132,31 +132,35 @@ const YogaFlowPreview = ({ data, onConfirm, onBack, isGenerating }: YogaFlowPrev
   const mainFlowCount = Math.max(1, numAsanas - warmupCount - peakCount - coolDownCount);
 
   return (
-    <div className="max-w-4xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="bg-white p-8 rounded-3xl shadow-2xl border border-gray-100">
-        <div className="flex justify-between items-start mb-10">
+    <div className="max-w-5xl mx-auto animate-in fade-in zoom-in-95 duration-700">
+      <div className="bg-white/80 backdrop-blur-3xl p-6 md:p-10 rounded-[3rem] shadow-2xl shadow-blue-900/10 border border-white/60">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
           <div>
-            <h2 className="text-4xl font-black text-gray-900 mb-2">Refine Your Flow</h2>
-            <p className="text-gray-500 font-medium">Customize the practice structure before generating</p>
+            <h2 className="text-4xl font-black text-gray-900 tracking-tight leading-tight">Refine Your Flow</h2>
+            <p className="text-gray-600 font-semibold text-base mt-1 italic opacity-80">Tailor the rhythm and focus before the AI begins its craft</p>
           </div>
           <button 
             onClick={onBack}
-            className="text-gray-300 hover:text-gray-600 transition-colors p-2 bg-gray-50 rounded-full"
+            className="group flex items-center gap-3 px-5 h-12 bg-gray-50 hover:bg-white hover:shadow-xl rounded-2xl transition-all active:scale-90 border border-gray-100"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M6 18L18 6M6 6l12 12" />
+            <svg className="w-5 h-5 text-gray-400 group-hover:text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M15 19l-7-7 7-7" />
             </svg>
+            <span className="text-[10px] font-black text-gray-400 group-hover:text-gray-900 tracking-[0.2em] uppercase">Adjust parameters</span>
           </button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 mb-12">
-          <div className="lg:col-span-3 space-y-8">
-            <div className="bg-blue-50/50 p-6 rounded-3xl border border-blue-100">
-              <h3 className="text-xl font-black text-blue-900 mb-6 flex items-center gap-3">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 mb-10">
+          <div className="lg:col-span-7 space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <div className="bg-white/40 p-6 md:p-8 rounded-[2rem] border border-white/80 shadow-sm relative overflow-hidden group">
+              <div className="absolute top-4 right-4 p-2 opacity-10 group-hover:opacity-20 transition-opacity">
+                <svg className="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
                 </svg>
-                Integrated Timing Model
+              </div>
+              <h3 className="text-lg font-black text-gray-900 mb-8 flex items-center gap-4">
+                <span className="w-1.5 h-6 bg-blue-600 rounded-full"></span>
+                TIMING ARCHITECTURE
               </h3>
               
               <IntegratedTimingSlider 
@@ -165,91 +169,122 @@ const YogaFlowPreview = ({ data, onConfirm, onBack, isGenerating }: YogaFlowPrev
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               {[
-                { label: 'Warm-up', info: 'Joint prep & breath', color: 'bg-orange-400', count: warmupCount, min: Math.round(data.duration * (timing.warmup / 100)) },
-                { label: 'Main Flow', info: 'Strength & mobility', color: 'bg-green-400', count: mainFlowCount, min: Math.round(data.duration * (timing.main / 100)) },
-                { label: 'Peak', info: 'Highest intensity', color: 'bg-purple-400', count: peakCount, min: Math.round(data.duration * (timing.peak / 100)) },
-                { label: 'Cool-down', info: 'Rest & transition', color: 'bg-blue-400', count: coolDownCount, min: Math.round(data.duration * (timing.cool / 100)) },
+                { label: 'Warm-up', info: 'Joint prep', color: 'bg-orange-400', border: 'border-orange-100', count: warmupCount, min: Math.round(data.duration * (timing.warmup / 100)) },
+                { label: 'Main Flow', info: 'Strength', color: 'bg-green-400', border: 'border-green-100', count: mainFlowCount, min: Math.round(data.duration * (timing.main / 100)) },
+                { label: 'Peak Sequence', info: 'Intensity', color: 'bg-purple-400', border: 'border-purple-100', count: peakCount, min: Math.round(data.duration * (timing.peak / 100)) },
+                { label: 'Integration', info: 'Recovery', color: 'bg-blue-400', border: 'border-blue-100', count: coolDownCount, min: Math.round(data.duration * (timing.cool / 100)) },
               ].map((section, i) => (
-                <div key={i} className="p-4 bg-white rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
-                  <div className={`w-1 h-10 rounded-full ${section.color}`}></div>
-                  <div className="flex-1">
-                    <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{section.label}</div>
-                    <div className="flex justify-between items-end">
-                      <div className="text-sm font-bold text-gray-800">
-                        <span className="text-[8px] text-gray-400 mr-1 opacity-70">APPROX.</span>
-                        {section.count} <span className="text-[10px] text-gray-400">POSES</span>
-                      </div>
-                      <div className="text-xs font-mono font-bold text-gray-400">{section.min}m</div>
+                <div key={i} className={`group p-5 bg-white/40 rounded-[1.5rem] border-2 ${section.border} hover:bg-white hover:shadow-xl hover:shadow-blue-900/5 transition-all`}>
+                  <div className="flex justify-between items-start mb-3">
+                    <div className={`w-8 h-8 rounded-lg ${section.color} shadow-lg shadow-gray-200/50 flex items-center justify-center text-white`}>
+                      <span className="text-[10px] font-black">{i + 1}</span>
                     </div>
+                    <div className="text-[10px] font-black text-gray-500 tracking-widest uppercase">{section.min}m</div>
+                  </div>
+                  <div className="text-[9px] font-black text-gray-500 uppercase tracking-[0.2em] mb-0.5">{section.label}</div>
+                  <div className="text-lg font-black text-gray-900 tracking-tight">
+                    {section.count} <span className="text-[10px] text-gray-500 font-bold ml-1 italic opacity-60">approx. poses</span>
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="lg:col-span-2 flex flex-col gap-6">
-            <div className="bg-gray-50 rounded-3xl p-6 border border-gray-100 h-full">
-              <h3 className="font-black text-gray-900 mb-6 uppercase tracking-widest text-xs flex items-center gap-2">
-                <span className="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></span>
-                Practice Profile
-              </h3>
-              <div className="space-y-4">
-                {[
-                  { label: 'Duration', value: `${data.duration} Minutes`, icon: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' },
-                  { label: 'Intensity', value: data.intensity, icon: 'M13 10V3L4 14h7v7l9-11h-7z' },
-                  { label: 'Style', value: data.style, icon: 'M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z' },
-                  { label: 'Focus', value: data.focus, icon: 'M15 12a3 3 0 11-6 0 3 3 0 016 0z M19 12a7 7 0 11-14 0 7 7 0 0114 0z' },
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-4 p-3 bg-white rounded-xl border border-gray-100 shadow-sm">
-                    <div className="bg-blue-50 p-2 rounded-lg text-blue-600">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={item.icon} />
-                      </svg>
+          <div className="lg:col-span-5 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-150">
+            <div className="bg-white/40 p-6 md:p-8 rounded-[2rem] border border-white/80 shadow-sm min-h-full flex flex-col justify-between">
+              <div>
+              <h3 className="text-lg font-black text-gray-900 mb-8 flex items-center gap-4">
+                <span className="w-1.5 h-6 bg-blue-600 rounded-full"></span>
+                  PRACTICE PROFILE
+                </h3>
+                
+                <div className="space-y-3">
+                  {[
+                    { label: 'Duration', value: `${data.duration} Minutes`, color: 'text-blue-600', bg: 'bg-blue-50' },
+                    { label: 'Intensity', value: data.intensity, color: 'text-green-600', bg: 'bg-green-50' },
+                    { label: 'Style', value: data.style, color: 'text-orange-600', bg: 'bg-orange-50' },
+                    { label: 'Focus', value: data.focus, color: 'text-purple-600', bg: 'bg-purple-50' },
+                  ].map((item, i) => (
+                    <div key={i} className={`group flex items-center justify-between p-4 bg-white/60 rounded-2xl shadow-sm transition-all hover:bg-white hover:shadow-md`}>
+                      <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">{item.label}</span>
+                      <span className={`text-sm font-black tracking-tight capitalize ${item.color}`}>{item.value}</span>
                     </div>
-                    <div>
-                      <div className="text-[10px] font-black text-gray-400 uppercase">{item.label}</div>
-                      <div className="text-sm font-bold text-gray-900 capitalize">{item.value}</div>
+                  ))}
+                </div>
+
+                {/* Tags Layout */}
+                <div className="mt-8 space-y-6">
+                  {((data.targetAreas && data.targetAreas.length > 0) || data.targetAreasCustom) && (
+                    <div className="space-y-3">
+                      <div className="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em]">Zones</div>
+                      <div className="flex flex-wrap gap-2">
+                        {[...(data.targetAreas || []), data.targetAreasCustom].filter(Boolean).map((area, i) => (
+                          <span key={i} className="px-3 py-1.5 bg-blue-50/50 text-blue-600 border border-blue-100 rounded-lg text-[9px] font-black uppercase tracking-tighter">
+                            {area}
+                          </span>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  )}
+
+                  {((data.limitations && data.limitations.length > 0) || data.limitationsCustom) && (
+                    <div className="space-y-3">
+                      <div className="text-[9px] font-black text-red-400 uppercase tracking-[0.2em]">Safety</div>
+                      <div className="flex flex-wrap gap-2">
+                        {[...(data.limitations || []), data.limitationsCustom].filter(Boolean).map((limit, i) => (
+                          <span key={i} className="px-3 py-1.5 bg-red-50/50 text-red-600 border border-red-100 rounded-lg text-[9px] font-black uppercase tracking-tighter">
+                            {limit}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="mt-8 p-3 bg-gray-50/50 rounded-2xl border border-gray-100 text-center">
+                 <p className="text-[9px] text-gray-400 font-bold italic opacity-70">AI tailored session: {numAsanas} poses</p>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-100">
-          <button
-            onClick={onBack}
-            className="flex-1 px-8 py-5 border-2 border-gray-200 rounded-2xl font-black text-gray-400 hover:bg-gray-50 hover:text-gray-600 transition-all text-sm uppercase tracking-widest active:scale-95"
-          >
-            Go Back
-          </button>
-          <button
-            onClick={() => onConfirm({
-              ...data,
-              warmupPercent: timing.warmup,
-              mainFlowPercent: timing.main,
-              peakPercent: timing.peak,
-              coolDownPercent: timing.cool
-            })}
-            disabled={isGenerating}
-            className="flex-[2] bg-blue-600 text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-blue-700 transition-all shadow-xl hover:shadow-blue-200/50 disabled:opacity-50 flex items-center justify-center min-h-[72px] active:scale-95"
-          >
+      </div>
+
+      <div className="flex justify-center pt-8 animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-300">
+        <button
+          onClick={() => onConfirm({
+            ...data,
+            warmupPercent: timing.warmup,
+            mainFlowPercent: timing.main,
+            peakPercent: timing.peak,
+            coolDownPercent: timing.cool
+          })}
+          disabled={isGenerating}
+          className="group relative px-16 py-6 bg-blue-600 text-white rounded-[2rem] font-black text-lg tracking-[0.2em] shadow-2xl shadow-blue-500/40 hover:bg-blue-700 hover:-translate-y-1 transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed uppercase"
+        >
+          <span className="relative z-10 flex items-center gap-3">
             {isGenerating ? (
-              <span className="flex items-center gap-4">
+              <>
                 <svg className="animate-spin h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
                 Creating Yoga Magic...
-              </span>
+              </>
             ) : (
-              "Confirm & Generate Program"
+              <>
+                GENERATE YOGA MAGIC
+                <svg className="w-6 h-6 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </>
             )}
-          </button>
-        </div>
+          </span>
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-indigo-600 rounded-[2rem] opacity-0 group-hover:opacity-20 transition-opacity"></div>
+        </button>
       </div>
     </div>
   );

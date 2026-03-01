@@ -1,7 +1,7 @@
 const auth = {
   providers: [
     {
-      domain: process.env.CLERK_FRONTEND_API_URL,
+      domain: "https://ethical-python-46.clerk.accounts.dev",
       applicationID: "convex",
     },
   ],

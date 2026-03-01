@@ -13,6 +13,14 @@ export const generate = action({
         mainFlowPercent: v.optional(v.number()),
         peakPercent: v.optional(v.number()),
         coolDownPercent: v.optional(v.number()),
+        // Advanced Parameters
+        targetAreas: v.optional(v.array(v.string())),
+        targetAreasCustom: v.optional(v.string()),
+        limitations: v.optional(v.array(v.string())),
+        limitationsCustom: v.optional(v.string()),
+        breathwork: v.optional(v.string()),
+        meditation: v.optional(v.string()),
+        props: v.optional(v.array(v.string())),
     },
     handler: async (ctx, args) => {
         const apiKey = process.env.GOOGLE_API_KEY;
@@ -30,6 +38,13 @@ export const generate = action({
         const pP = args.peakPercent || 15;
         const cP = args.coolDownPercent || 20;
 
+        // Prepare context for AI
+        const areas = [...(args.targetAreas || []), args.targetAreasCustom].filter(Boolean).join(", ");
+        const limits = [...(args.limitations || []), args.limitationsCustom].filter(Boolean).join(", ");
+        const props = (args.props || []).join(", ");
+        const breath = args.breathwork || "light";
+        const medit = args.meditation || "short closing";
+
         // 1. Generate Structured Flow
         const textResponse = await ai.models.generateContent({
             model: "gemini-3-flash-preview",
@@ -38,16 +53,25 @@ export const generate = action({
             Intensity: ${args.intensity}
             Style: ${args.style}
             Focus: ${args.focus}
+            ${areas ? `Anatomical Focus: ${areas}` : ""}
+            ${limits ? `USER LIMITATIONS/INJURIES: ${limits} (CRITICAL: Adjust or exclude poses to ensure safety)` : ""}
+            ${props ? `AVAILABLE PROPS: ${props} (Integrate their use in the flow)` : ""}
+            Breathwork Integration: ${breath}
+            Meditation Level: ${medit}
 
             Analyze the typical duration for holding yoga asanas in a real-life yoga class. Base your corrections on commonly accepted yoga teaching standards across Hatha, Vinyasa, and general flow classes.
 
             The flow MUST be divided into 4 sections according to this timing model:
-            1. Warm-up (${wP}% of time)
-            2. Main Flow (${mP}% of time)
+            1. Warm-up (${wP}% of time) - ${breath !== "none" ? "Include breath orientation" : ""}
+            2. Main Flow (${mP}% of time) - ${areas ? `Prioritize ${areas}` : ""}
             3. Peak Sequence (${pP}% of time)
-            4. Cool-down + Relaxation (${cP}% of time)
+            4. Cool-down + Relaxation (${cP}% of time) - ${medit !== "none" ? `Integrate ${medit}` : ""}
 
             Total asanas to generate: ${numAsanas}. Distribute them logically across sections based on the percentage of time allocated to each.
+
+            SAFETY & TAILORING:
+            - If limitations like "${limits}" are specified, avoid poses that aggravate these areas (e.g., if "knee sensitivity", avoid deep lunges or suggest "blocks/blanket under knees").
+            - If props like "${props}" are available, suggest how to use them in the "clues" field.
             
             CRITICAL GUIDELINES FOR ASANA DURATIONS:
             - Evaluate each asana duration realistically for a safe and practical class.
@@ -90,6 +114,7 @@ export const generate = action({
                     sanskritName: asana.sanskritName,
                     duration: asana.duration,
                     clues: asana.clues,
+                    description: asana.description,
                     image: null, // Image generation disabled
                 })),
             };
