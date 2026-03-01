@@ -5,7 +5,14 @@ import { GoogleGenAI } from "@google/genai";
 
 export const generate = action({
     args: {
-        level: v.string(),
+        intensity: v.string(),
+        style: v.string(),
+        focus: v.string(),
+        duration: v.number(),
+        warmupPercent: v.optional(v.number()),
+        mainFlowPercent: v.optional(v.number()),
+        peakPercent: v.optional(v.number()),
+        coolDownPercent: v.optional(v.number()),
     },
     handler: async (ctx, args) => {
         const apiKey = process.env.GOOGLE_API_KEY;
@@ -15,51 +22,82 @@ export const generate = action({
 
         const ai = new GoogleGenAI({ apiKey });
 
-        // 1. Generate Asana Names and Descriptions
+        const numAsanas = Math.max(6, Math.floor(args.duration / 3));
+
+        // Use custom percentages or fallback to defaults
+        const wP = args.warmupPercent || 25;
+        const mP = args.mainFlowPercent || 40;
+        const pP = args.peakPercent || 15;
+        const cP = args.coolDownPercent || 20;
+
+        // 1. Generate Structured Flow
         const textResponse = await ai.models.generateContent({
             model: "gemini-3-flash-preview",
-            contents: `Generate 3 yoga asanas for level "${args.level}". 
-            Return a JSON array of objects, each having:
-            - "name": string (Asana name)
-            - "description": string (Visual description for image generation)
-            Strictly return ONLY the JSON array.`,
+            contents: `You are a professional yoga instructor and yoga teacher trainer.
+            Generate a structured yoga flow for a ${args.duration}-minute practice.
+            Intensity: ${args.intensity}
+            Style: ${args.style}
+            Focus: ${args.focus}
+
+            Analyze the typical duration for holding yoga asanas in a real-life yoga class. Base your corrections on commonly accepted yoga teaching standards across Hatha, Vinyasa, and general flow classes.
+
+            The flow MUST be divided into 4 sections according to this timing model:
+            1. Warm-up (${wP}% of time)
+            2. Main Flow (${mP}% of time)
+            3. Peak Sequence (${pP}% of time)
+            4. Cool-down + Relaxation (${cP}% of time)
+
+            Total asanas to generate: ${numAsanas}. Distribute them logically across sections based on the percentage of time allocated to each.
+            
+            CRITICAL GUIDELINES FOR ASANA DURATIONS:
+            - Evaluate each asana duration realistically for a safe and practical class.
+            - Output durations as ranges or breaths, NOT single fixed minute numbers (e.g., "20–40 seconds", "3–6 breaths").
+            - Strong standing poses: ~20–60 seconds
+            - Balance poses: ~10–40 seconds
+            - Seated stretches: ~30–120 seconds
+            - Backbends: ~15–60 seconds
+            - Restorative poses: ~2–10 minutes
+            - Transitions: ~3–10 seconds
+            - Ensure the total volume of asanas realistically fills the total ${args.duration} minute practice.
+
+            Return a JSON object with:
+            - "summary": { "warmup": string, "mainFlow": string, "peak": string, "coolDown": string }
+            - "sections": array of objects:
+                - "title": string (Section name)
+                - "asanas": array of objects:
+                    - "name": string (English name)
+                    - "sanskritName": string (Sanskrit name)
+                    - "duration": string (Realistic range/breaths, e.g. "30-60s" or "5 breaths")
+                    - "clues": string (Short teaching tips/comments on how to perform the asana, max 15 words)
+                    - "description": string (Detailed visual description)
+            Strictly return ONLY the JSON object.`,
             config: {
                 responseMimeType: "application/json",
             }
         });
 
-        const asanas = JSON.parse(textResponse.text!) as { name: string; description: string }[];
+        const flow = JSON.parse(textResponse.text!) as {
+            summary: { warmup: string; mainFlow: string; peak: string; coolDown: string };
+            sections: { title: string; asanas: { name: string; sanskritName: string; duration: string; clues: string; description: string }[] }[];
+        };
 
-        // 2. Generate Images for each Asana
-        const results = await Promise.all(
-            asanas.map(async (asana) => {
-                try {
-                    const imageResponse = await ai.models.generateContent({
-                        model: "gemini-2.5-flash-image",
-                        contents: `Photorealistic yoga instructor performing ${asana.name}, ${asana.description}, white background, high quality`,
-                    });
+        // 2. Map sections (Skipping AI Image generation for now as requested)
+        const structuredSections = flow.sections.map((section) => {
+            return {
+                title: section.title,
+                asanas: section.asanas.map(asana => ({
+                    name: asana.name,
+                    sanskritName: asana.sanskritName,
+                    duration: asana.duration,
+                    clues: asana.clues,
+                    image: null, // Image generation disabled
+                })),
+            };
+        });
 
-                    let image: string | null = null;
-                    const part = imageResponse.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
-
-                    if (part?.inlineData?.data) {
-                        image = part.inlineData.data;
-                    }
-
-                    return {
-                        name: asana.name,
-                        image: image ? `data:image/png;base64,${image}` : null,
-                    };
-                } catch (error) {
-                    console.error(`Failed to generate image for ${asana.name}:`, error);
-                    return {
-                        name: asana.name,
-                        image: null,
-                    };
-                }
-            })
-        );
-
-        return results;
+        return {
+            summary: flow.summary,
+            sections: structuredSections,
+        };
     },
 });

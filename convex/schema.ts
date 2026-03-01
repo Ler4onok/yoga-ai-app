@@ -11,8 +11,8 @@ export default defineSchema({
 
   asanas: defineTable({
     name: v.string(),
-    level: v.string(),
-  }).index("by_level", ["level"]),
+    intensity: v.string(),
+  }).index("by_intensity", ["intensity"]),
 
   plans: defineTable({
     userId: v.string(),
@@ -29,6 +29,8 @@ export default defineSchema({
               reps: v.optional(v.number()),
               duration: v.optional(v.string()),
               description: v.optional(v.string()),
+              clues: v.optional(v.string()),
+              sanskritName: v.optional(v.string()),
               asanas: v.optional(v.array(v.string())),
             }),
           ),
