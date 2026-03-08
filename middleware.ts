@@ -2,9 +2,7 @@ import { clerkMiddleware } from "@clerk/nextjs/server";
 
 // const isProtectedRoutes = createRouteMatcher(["/profile", "/generate-asanas"]);
 
-export default clerkMiddleware(async () => {
-  // if (isProtectedRoutes(req)) await auth.protect();
-});
+export default clerkMiddleware();
 
 export const config = {
   matcher: [
