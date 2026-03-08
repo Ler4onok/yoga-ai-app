@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 export const yogaFormSchema = z.object({
-  intensity: z.enum(["beginner", "gentle", "intermediate", "advanced", "mixed", "adaptive"]),
+  intensity: z.enum(["beginner", "intermediate", "advanced", "mixed"]),
   style: z.enum(["hatha", "vinyasa", "ashtanga", "yin", "restorative", "power", "prenatal", "therapeutic", "mobility", "somatic"]),
   focus: z.enum(["flexibility", "strength", "mobility", "stability", "recovery", "relaxation", "mindfulness", "endurance", "posture", "balance", "energy boost"]),
   duration: z.number().min(5).max(120),
@@ -74,8 +74,8 @@ const YogaFilters = ({ onSubmit, defaultValues }: YogaFiltersProps) => {
   };
 
   return (
-    <form 
-      onSubmit={handleSubmit(onSubmit)} 
+    <form
+      onSubmit={handleSubmit(onSubmit)}
       className="space-y-8 max-w-5xl mx-auto mb-16 px-4"
     >
       <div className="bg-white/80 backdrop-blur-xl p-6 md:p-10 rounded-[3rem] shadow-2xl shadow-blue-900/5 border border-white/50 space-y-10">
@@ -88,12 +88,12 @@ const YogaFilters = ({ onSubmit, defaultValues }: YogaFiltersProps) => {
             </div>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2.5 pt-1">
-            {(["beginner", "gentle", "intermediate", "advanced", "mixed", "adaptive"] as const).map((lvl) => (
-              <label 
+            {(["beginner", "intermediate", "advanced", "mixed"] as const).map((lvl) => (
+              <label
                 key={lvl}
                 className={`flex items-center justify-center p-3 rounded-2xl border-2 transition-all cursor-pointer font-black text-[9px] uppercase tracking-widest
-                  ${watch("intensity") === lvl 
-                    ? "bg-gray-900 border-gray-900 text-white shadow-xl shadow-gray-200 -translate-y-0.5" 
+                  ${watch("intensity") === lvl
+                    ? "bg-gray-900 border-gray-900 text-white shadow-xl shadow-gray-200 -translate-y-0.5"
                     : "bg-white border-gray-100 text-gray-500 hover:border-gray-200"}`}
               >
                 <input type="radio" value={lvl} {...register("intensity")} className="hidden" />
@@ -117,7 +117,7 @@ const YogaFilters = ({ onSubmit, defaultValues }: YogaFiltersProps) => {
                 ))}
               </select>
               <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7"/></svg>
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" /></svg>
               </div>
             </div>
           </div>
@@ -134,7 +134,7 @@ const YogaFilters = ({ onSubmit, defaultValues }: YogaFiltersProps) => {
                 ))}
               </select>
               <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7"/></svg>
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" /></svg>
               </div>
             </div>
           </div>
@@ -190,12 +190,12 @@ const YogaFilters = ({ onSubmit, defaultValues }: YogaFiltersProps) => {
                   Target Anatomical Areas
                 </label>
                 <div className="flex flex-wrap gap-2">
-                  {["neck", "shoulders", "upper back", "lower back", "hips", "hamstrings", "core", "arms", "ankles"].map((area) => (
+                  {["neck", "upper back", "lower back", "hips", "hamstrings", "core", "arms", "ankles"].map((area) => (
                     <button
                       key={area}
                       type="button"
                       onClick={() => toggleSelection("targetAreas", area)}
-                      className={`px-5 py-2.5 rounded-xl text-[9px] font-bold transition-all border-2
+                      className={`px-5 py-2.5 rounded-xl text-[12px] font-bold transition-all border-2
                         ${selectedTargetAreas.includes(area)
                           ? "bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-200 scale-105"
                           : "bg-white border-gray-100 text-gray-500 hover:border-gray-200"}`}
@@ -223,7 +223,7 @@ const YogaFilters = ({ onSubmit, defaultValues }: YogaFiltersProps) => {
                       key={limit}
                       type="button"
                       onClick={() => toggleSelection("limitations", limit)}
-                      className={`px-5 py-2.5 rounded-xl text-[9px] font-bold transition-all border-2
+                      className={`px-5 py-2.5 rounded-xl text-[12px] font-bold transition-all border-2
                         ${selectedLimitations.includes(limit)
                           ? "bg-red-500 border-red-500 text-white shadow-lg shadow-red-200 scale-105"
                           : "bg-white border-gray-100 text-gray-500 hover:border-gray-200 text-red-500/60"}`}
@@ -254,7 +254,7 @@ const YogaFilters = ({ onSubmit, defaultValues }: YogaFiltersProps) => {
                       <option value="pranayama-focused">Pranayama Focused</option>
                     </select>
                     <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7"/></svg>
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" /></svg>
                     </div>
                   </div>
                 </div>
@@ -270,7 +270,7 @@ const YogaFilters = ({ onSubmit, defaultValues }: YogaFiltersProps) => {
                       <option value="full guided meditation">Full Guided Session</option>
                     </select>
                     <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-500">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7"/></svg>
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7" /></svg>
                     </div>
                   </div>
                 </div>
@@ -285,7 +285,7 @@ const YogaFilters = ({ onSubmit, defaultValues }: YogaFiltersProps) => {
                       key={prop}
                       type="button"
                       onClick={() => toggleSelection("props", prop)}
-                      className={`px-5 py-2.5 min-w-[90px] rounded-xl text-[9px] font-bold transition-all border-2
+                      className={`px-5 py-2.5 min-w-[90px] rounded-xl text-[12px] font-bold transition-all border-2
                         ${selectedProps.includes(prop)
                           ? "bg-gray-900 border-gray-900 text-white shadow-xl shadow-gray-200 scale-105"
                           : "bg-white border-gray-100 text-gray-500 hover:border-gray-200"}`}

@@ -8,10 +8,10 @@ interface YogaFlowPreviewProps {
   isGenerating: boolean;
 }
 
-const IntegratedTimingSlider = ({ 
-  percentages, 
-  onChange 
-}: { 
+const IntegratedTimingSlider = ({
+  percentages,
+  onChange
+}: {
   percentages: { warmup: number; main: number; peak: number; cool: number };
   onChange: (newP: { warmup: number; main: number; peak: number; cool: number }) => void;
 }) => {
@@ -21,7 +21,7 @@ const IntegratedTimingSlider = ({
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     const percent = Math.round(((clientX - rect.left) / rect.width) * 100);
-    
+
     const minSection = 5;
     const boundaries = [
       percentages.warmup,
@@ -30,7 +30,7 @@ const IntegratedTimingSlider = ({
     ];
 
     const newBoundaries = [...boundaries];
-    
+
     if (index === 0) {
       newBoundaries[0] = Math.max(minSection, Math.min(percent, boundaries[1] - minSection));
     } else if (index === 1) {
@@ -64,7 +64,7 @@ const IntegratedTimingSlider = ({
 
   return (
     <div className="space-y-6 pt-4">
-      <div 
+      <div
         ref={containerRef}
         className="relative h-12 w-full bg-gray-100/50 rounded-2xl overflow-visible flex cursor-pointer select-none border-4 border-white shadow-inner"
       >
@@ -83,7 +83,7 @@ const IntegratedTimingSlider = ({
 
         {/* Drag Handles */}
         {[percentages.warmup, percentages.warmup + percentages.main, percentages.warmup + percentages.main + percentages.peak].map((pos, i) => (
-          <div 
+          <div
             key={i}
             onMouseDown={() => startDrag(i)}
             onTouchStart={() => startDrag(i)}
@@ -125,7 +125,7 @@ const YogaFlowPreview = ({ data, onConfirm, onBack, isGenerating }: YogaFlowPrev
   });
 
   const numAsanas = Math.max(4, Math.floor(data.duration / 4));
-  
+
   const warmupCount = Math.max(1, Math.round(numAsanas * (timing.warmup / 100)));
   const peakCount = Math.max(1, Math.round(numAsanas * (timing.peak / 100)));
   const coolDownCount = Math.max(1, Math.round(numAsanas * (timing.cool / 100)));
@@ -139,7 +139,7 @@ const YogaFlowPreview = ({ data, onConfirm, onBack, isGenerating }: YogaFlowPrev
             <h2 className="text-4xl font-black text-gray-900 tracking-tight leading-tight">Refine Your Flow</h2>
             <p className="text-gray-600 font-semibold text-base mt-1 italic opacity-80">Tailor the rhythm and focus before the AI begins its craft</p>
           </div>
-          <button 
+          <button
             onClick={onBack}
             className="group flex items-center gap-3 px-5 h-12 bg-gray-50 hover:bg-white hover:shadow-xl rounded-2xl transition-all active:scale-90 border border-gray-100"
           >
@@ -155,15 +155,15 @@ const YogaFlowPreview = ({ data, onConfirm, onBack, isGenerating }: YogaFlowPrev
             <div className="bg-white/40 p-6 md:p-8 rounded-[2rem] border border-white/80 shadow-sm relative overflow-hidden group">
               <div className="absolute top-4 right-4 p-2 opacity-10 group-hover:opacity-20 transition-opacity">
                 <svg className="w-8 h-8 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
                 </svg>
               </div>
               <h3 className="text-lg font-black text-gray-900 mb-8 flex items-center gap-4">
                 <span className="w-1.5 h-6 bg-blue-600 rounded-full"></span>
                 TIMING ARCHITECTURE
               </h3>
-              
-              <IntegratedTimingSlider 
+
+              <IntegratedTimingSlider
                 percentages={timing}
                 onChange={setTiming}
               />
@@ -195,11 +195,11 @@ const YogaFlowPreview = ({ data, onConfirm, onBack, isGenerating }: YogaFlowPrev
           <div className="lg:col-span-5 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-150">
             <div className="bg-white/40 p-6 md:p-8 rounded-[2rem] border border-white/80 shadow-sm min-h-full flex flex-col justify-between">
               <div>
-              <h3 className="text-lg font-black text-gray-900 mb-8 flex items-center gap-4">
-                <span className="w-1.5 h-6 bg-blue-600 rounded-full"></span>
+                <h3 className="text-lg font-black text-gray-900 mb-8 flex items-center gap-4">
+                  <span className="w-1.5 h-6 bg-blue-600 rounded-full"></span>
                   PRACTICE PROFILE
                 </h3>
-                
+
                 <div className="space-y-3">
                   {[
                     { label: 'Duration', value: `${data.duration} Minutes`, color: 'text-blue-600', bg: 'bg-blue-50' },
@@ -245,7 +245,7 @@ const YogaFlowPreview = ({ data, onConfirm, onBack, isGenerating }: YogaFlowPrev
               </div>
 
               <div className="mt-8 p-3 bg-gray-50/50 rounded-2xl border border-gray-100 text-center">
-                 <p className="text-[9px] text-gray-400 font-bold italic opacity-70">AI tailored session: {numAsanas} poses</p>
+                <p className="text-[9px] text-gray-400 font-bold italic opacity-70">AI tailored session: {numAsanas} poses</p>
               </div>
             </div>
           </div>

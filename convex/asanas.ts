@@ -47,7 +47,7 @@ export const generate = action({
 
         // 1. Generate Structured Flow
         const textResponse = await ai.models.generateContent({
-            model: "gemini-3-flash-preview",
+            model: 'gemini-2.5-flash-preview',
             contents: `You are a professional yoga instructor and yoga teacher trainer.
             Generate a structured yoga flow for a ${args.duration}-minute practice.
             Intensity: ${args.intensity}
@@ -99,7 +99,7 @@ export const generate = action({
                 responseMimeType: "application/json",
             }
         });
-
+        console.log(textResponse.text);
         const flow = JSON.parse(textResponse.text!) as {
             summary: { warmup: string; mainFlow: string; peak: string; coolDown: string };
             sections: { title: string; asanas: { name: string; sanskritName: string; duration: string; clues: string; description: string }[] }[];
