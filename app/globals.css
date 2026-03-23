@@ -116,7 +116,138 @@
     * {
         @apply border-border outline-ring/50;
     }
+
     body {
         @apply bg-background text-foreground;
+    }
+}
+
+@media print {
+
+    /* Page setup */
+    @page {
+        size: A4 portrait;
+        margin: 5mm;
+    }
+
+    /* Reset everything for maximum compactness */
+    * {
+        margin: 0 !important;
+        padding: 0 !important;
+        gap: 0 !important;
+        line-height: 1.05 !important;
+        box-shadow: none !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
+
+    body {
+        background: #fff !important;
+        color: #000 !important;
+        font-size: 3pt !important;
+    }
+
+    /* Hide non-essential UI */
+    header,
+    footer,
+    .no-print,
+    img,
+    svg,
+    button,
+    div[className*="bg-indigo-50"],
+    div[className*="bg-purple-50"],
+    div[className*="bg-gray-100"],
+    div[className*="bg-white/80"],
+    div[className*="bg-white/60"],
+    div[className*="w-10 h-10"] {
+        display: none !important;
+    }
+
+    /* Typography compression */
+    h1,
+    h2,
+    h3,
+    h4 {
+        font-size: 6pt !important;
+        font-weight: bold !important;
+    }
+
+    p,
+    span,
+    div {
+        font-size: 5pt !important;
+    }
+
+    p {
+        display: inline !important;
+    }
+
+    /* Remove Tailwind spacing leftovers */
+    .print\:space-y-12,
+    div[className*="space-y-20"] {
+        gap: 0 !important;
+    }
+
+    /* Main layout: dense grid instead of columns */
+    div[className*="space-y-8"] {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 0.2rem !important;
+    }
+
+    /* Asana cards */
+    div[className*="bg-white rounded"] {
+        padding: 0.15rem !important;
+        margin-bottom: 0.15rem !important;
+        border: 0.5px solid #ddd !important;
+        border-radius: 2px !important;
+    }
+
+    /* Section headers */
+    div[className*="sticky"] {
+        font-size: 6pt !important;
+        background: #f9f9f9 !important;
+        margin: 0.2rem 0 !important;
+        padding: 0.1rem !important;
+    }
+
+    /* Duration tag */
+    span[className*="bg-white shadow-sm"] {
+        font-size: 4pt !important;
+        padding: 0 0.15rem !important;
+        border: 0.5px solid #ccc !important;
+    }
+
+    /* Opener / closer ultra-compact */
+    div[className*="bg-indigo-50/50"],
+    div[className*="bg-purple-50/50"] {
+        background: transparent !important;
+        border: none !important;
+    }
+
+    h3[className*="text-xl"],
+    h4[className*="text-3xl"] {
+        font-size: 6pt !important;
+        display: inline !important;
+    }
+
+    p[className*="text-lg"] {
+        font-size: 5pt !important;
+        display: inline !important;
+    }
+
+    /* Transition blocks */
+    div[className*="mt-4 flex items-start"] {
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        background: transparent !important;
+    }
+
+    /* Disable animations */
+    .animate-in {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
     }
 }

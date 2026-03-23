@@ -68,16 +68,16 @@ const IntegratedTimingSlider = ({
         ref={containerRef}
         className="relative h-12 w-full bg-gray-100/50 rounded-2xl overflow-visible flex cursor-pointer select-none border-4 border-white shadow-inner"
       >
-        <div style={{ width: `${percentages.warmup}%` }} className="h-full bg-orange-400 transition-all duration-75 first:rounded-l-xl flex items-center justify-center text-[10px] font-black text-white uppercase tracking-tighter overflow-hidden">
+        <div style={{ width: `${percentages.warmup}%` }} className="h-full bg-orange-400 transition-all duration-75 first:rounded-l-xl flex items-center justify-center text-[11px] font-black text-white uppercase tracking-tighter overflow-hidden">
           {percentages.warmup}%
         </div>
-        <div style={{ width: `${percentages.main}%` }} className="h-full bg-green-400 transition-all duration-75 flex items-center justify-center text-[10px] font-black text-white uppercase tracking-tighter overflow-hidden border-l-2 border-white/20">
+        <div style={{ width: `${percentages.main}%` }} className="h-full bg-green-400 transition-all duration-75 flex items-center justify-center text-[11px] font-black text-white uppercase tracking-tighter overflow-hidden border-l-2 border-white/20">
           {percentages.main}%
         </div>
-        <div style={{ width: `${percentages.peak}%` }} className="h-full bg-purple-400 transition-all duration-75 flex items-center justify-center text-[10px] font-black text-white uppercase tracking-tighter overflow-hidden border-l-2 border-white/20">
+        <div style={{ width: `${percentages.peak}%` }} className="h-full bg-purple-400 transition-all duration-75 flex items-center justify-center text-[11px] font-black text-white uppercase tracking-tighter overflow-hidden border-l-2 border-white/20">
           {percentages.peak}%
         </div>
-        <div style={{ width: `${percentages.cool}%` }} className="h-full bg-blue-400 transition-all duration-75 last:rounded-r-xl flex items-center justify-center text-[10px] font-black text-white uppercase tracking-tighter overflow-hidden border-l-2 border-white/20">
+        <div style={{ width: `${percentages.cool}%` }} className="h-full bg-blue-400 transition-all duration-75 last:rounded-r-xl flex items-center justify-center text-[11px] font-black text-white uppercase tracking-tighter overflow-hidden border-l-2 border-white/20">
           {percentages.cool}%
         </div>
 
@@ -107,7 +107,7 @@ const IntegratedTimingSlider = ({
           { label: 'Cool', color: 'text-blue-600', val: percentages.cool },
         ].map((item, i) => (
           <div key={i}>
-            <div className={`text-[10px] font-black uppercase ${item.color}`}>{item.label}</div>
+            <div className={`text-[11px] font-black uppercase tracking-widest ${item.color}`}>{item.label}</div>
             <div className="text-sm font-bold text-gray-900">{item.val}%</div>
           </div>
         ))}
@@ -124,7 +124,7 @@ const YogaFlowPreview = ({ data, onConfirm, onBack, isGenerating }: YogaFlowPrev
     cool: data.coolDownPercent
   });
 
-  const numAsanas = Math.max(4, Math.floor(data.duration / 4));
+  const numAsanas = Math.max(8, Math.floor(data.duration / 2.3));
 
   const warmupCount = Math.max(1, Math.round(numAsanas * (timing.warmup / 100)));
   const peakCount = Math.max(1, Math.round(numAsanas * (timing.peak / 100)));
@@ -146,7 +146,7 @@ const YogaFlowPreview = ({ data, onConfirm, onBack, isGenerating }: YogaFlowPrev
             <svg className="w-5 h-5 text-gray-400 group-hover:text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M15 19l-7-7 7-7" />
             </svg>
-            <span className="text-[10px] font-black text-gray-400 group-hover:text-gray-900 tracking-[0.2em] uppercase">Adjust parameters</span>
+            <span className="text-[11px] font-black text-gray-400 group-hover:text-gray-900 tracking-[0.2em] uppercase cursor-pointer">Adjust parameters</span>
           </button>
         </div>
 
@@ -176,16 +176,16 @@ const YogaFlowPreview = ({ data, onConfirm, onBack, isGenerating }: YogaFlowPrev
                 { label: 'Peak Sequence', info: 'Intensity', color: 'bg-purple-400', border: 'border-purple-100', count: peakCount, min: Math.round(data.duration * (timing.peak / 100)) },
                 { label: 'Integration', info: 'Recovery', color: 'bg-blue-400', border: 'border-blue-100', count: coolDownCount, min: Math.round(data.duration * (timing.cool / 100)) },
               ].map((section, i) => (
-                <div key={i} className={`group p-5 bg-white/40 rounded-[1.5rem] border-2 ${section.border} hover:bg-white hover:shadow-xl hover:shadow-blue-900/5 transition-all`}>
+                <div key={i} className={`group p-5 bg-white/40 rounded-[1.5rem] border-2 ${section.border} hover:bg-white hover:shadow-xl hover:shadow-blue-900/5 transition-all cursor-pointer`}>
                   <div className="flex justify-between items-start mb-3">
                     <div className={`w-8 h-8 rounded-lg ${section.color} shadow-lg shadow-gray-200/50 flex items-center justify-center text-white`}>
-                      <span className="text-[10px] font-black">{i + 1}</span>
+                      <span className="text-[11px] font-black">{i + 1}</span>
                     </div>
-                    <div className="text-[10px] font-black text-gray-500 tracking-widest uppercase">{section.min}m</div>
+                    <div className="text-[11px] font-black text-gray-500 tracking-widest uppercase">{section.min}m</div>
                   </div>
-                  <div className="text-[9px] font-black text-gray-500 uppercase tracking-[0.2em] mb-0.5">{section.label}</div>
+                  <div className="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] mb-0.5">{section.label}</div>
                   <div className="text-lg font-black text-gray-900 tracking-tight">
-                    {section.count} <span className="text-[10px] text-gray-500 font-bold ml-1 italic opacity-60">approx. poses</span>
+                    {section.count} <span className="text-[11px] text-gray-500 font-bold ml-1 italic opacity-60">approx. poses</span>
                   </div>
                 </div>
               ))}
@@ -208,7 +208,7 @@ const YogaFlowPreview = ({ data, onConfirm, onBack, isGenerating }: YogaFlowPrev
                     { label: 'Focus', value: data.focus, color: 'text-purple-600', bg: 'bg-purple-50' },
                   ].map((item, i) => (
                     <div key={i} className={`group flex items-center justify-between p-4 bg-white/60 rounded-2xl shadow-sm transition-all hover:bg-white hover:shadow-md`}>
-                      <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">{item.label}</span>
+                      <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{item.label}</span>
                       <span className={`text-sm font-black tracking-tight capitalize ${item.color}`}>{item.value}</span>
                     </div>
                   ))}
@@ -218,10 +218,10 @@ const YogaFlowPreview = ({ data, onConfirm, onBack, isGenerating }: YogaFlowPrev
                 <div className="mt-8 space-y-6">
                   {((data.targetAreas && data.targetAreas.length > 0) || data.targetAreasCustom) && (
                     <div className="space-y-3">
-                      <div className="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em]">Zones</div>
+                      <div className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">Zones</div>
                       <div className="flex flex-wrap gap-2">
                         {[...(data.targetAreas || []), data.targetAreasCustom].filter(Boolean).map((area, i) => (
-                          <span key={i} className="px-3 py-1.5 bg-blue-50/50 text-blue-600 border border-blue-100 rounded-lg text-[9px] font-black uppercase tracking-tighter">
+                          <span key={i} className="px-3 py-1.5 bg-blue-50/50 text-blue-600 border border-blue-100 rounded-lg text-[10px] font-black uppercase tracking-tighter">
                             {area}
                           </span>
                         ))}
@@ -231,10 +231,10 @@ const YogaFlowPreview = ({ data, onConfirm, onBack, isGenerating }: YogaFlowPrev
 
                   {((data.limitations && data.limitations.length > 0) || data.limitationsCustom) && (
                     <div className="space-y-3">
-                      <div className="text-[9px] font-black text-red-400 uppercase tracking-[0.2em]">Safety</div>
+                      <div className="text-[10px] font-black text-red-400 uppercase tracking-[0.2em]">Safety</div>
                       <div className="flex flex-wrap gap-2">
                         {[...(data.limitations || []), data.limitationsCustom].filter(Boolean).map((limit, i) => (
-                          <span key={i} className="px-3 py-1.5 bg-red-50/50 text-red-600 border border-red-100 rounded-lg text-[9px] font-black uppercase tracking-tighter">
+                          <span key={i} className="px-3 py-1.5 bg-red-50/50 text-red-600 border border-red-100 rounded-lg text-[10px] font-black uppercase tracking-tighter">
                             {limit}
                           </span>
                         ))}
@@ -245,7 +245,7 @@ const YogaFlowPreview = ({ data, onConfirm, onBack, isGenerating }: YogaFlowPrev
               </div>
 
               <div className="mt-8 p-3 bg-gray-50/50 rounded-2xl border border-gray-100 text-center">
-                <p className="text-[9px] text-gray-400 font-bold italic opacity-70">AI tailored session: {numAsanas} poses</p>
+                <p className="text-[10px] text-gray-400 font-bold italic opacity-70">AI tailored session: {numAsanas} poses</p>
               </div>
             </div>
           </div>
@@ -263,12 +263,12 @@ const YogaFlowPreview = ({ data, onConfirm, onBack, isGenerating }: YogaFlowPrev
             coolDownPercent: timing.cool
           })}
           disabled={isGenerating}
-          className="group relative px-16 py-6 bg-blue-600 text-white rounded-[2rem] font-black text-lg tracking-[0.2em] shadow-2xl shadow-blue-500/40 hover:bg-blue-700 hover:-translate-y-1 transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed uppercase"
+          className="group cursor-pointer relative px-8 py-4 bg-blue-600 text-white rounded-2xl font-black text-sm tracking-[0.2em] shadow-xl shadow-blue-500/40 hover:bg-blue-700 hover:-translate-y-1 transition-all active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed uppercase overflow-hidden flex items-center justify-center gap-3"
         >
           <span className="relative z-10 flex items-center gap-3">
             {isGenerating ? (
               <>
-                <svg className="animate-spin h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
@@ -277,13 +277,13 @@ const YogaFlowPreview = ({ data, onConfirm, onBack, isGenerating }: YogaFlowPrev
             ) : (
               <>
                 GENERATE YOGA MAGIC
-                <svg className="w-6 h-6 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
               </>
             )}
           </span>
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-indigo-600 rounded-[2rem] opacity-0 group-hover:opacity-20 transition-opacity"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-indigo-600 rounded-2xl opacity-0 group-hover:opacity-20 transition-opacity"></div>
         </button>
       </div>
     </div>

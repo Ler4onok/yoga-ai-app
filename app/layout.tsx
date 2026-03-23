@@ -19,6 +19,8 @@ export const metadata: Metadata = {
   description: "Intelligent Yoga Sequencing driven by AI.",
 };
 
+import Footer from "@/components/Footer";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -30,10 +32,16 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <Header />
-          {children}
+          <div>
+            <Header />
+            <main >
+              {children}
+            </main>
+            <Footer />
+          </div>
         </body>
       </html>
-    </ConvexClerkProvider>
+    </ConvexClerkProvider >
   );
 }
+

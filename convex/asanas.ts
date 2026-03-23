@@ -30,7 +30,7 @@ export const generate = action({
 
         const ai = new GoogleGenAI({ apiKey });
 
-        const numAsanas = Math.max(6, Math.floor(args.duration / 3));
+        const numAsanas = Math.max(8, Math.floor(args.duration / 2.3));
 
         // Use custom percentages or fallback to defaults
         const wP = args.warmupPercent || 25;
@@ -47,9 +47,9 @@ export const generate = action({
 
         // 1. Generate Structured Flow
         const textResponse = await ai.models.generateContent({
-            model: 'gemini-2.5-flash-preview',
-            contents: `You are a professional yoga instructor and yoga teacher trainer.
-            Generate a structured yoga flow for a ${args.duration}-minute practice.
+            model: 'gemini-3-flash-preview',
+            contents: `Act as an experienced yoga instructor and yoga teacher trainer.
+            Generate a structured, naturally flowing yoga sequence for a ${args.duration}-minute practice.
             Intensity: ${args.intensity}
             Style: ${args.style}
             Focus: ${args.focus}
@@ -58,42 +58,49 @@ export const generate = action({
             ${props ? `AVAILABLE PROPS: ${props} (Integrate their use in the flow)` : ""}
             Breathwork Integration: ${breath}
             Meditation Level: ${medit}
-
-            Analyze the typical duration for holding yoga asanas in a real-life yoga class. Base your corrections on commonly accepted yoga teaching standards across Hatha, Vinyasa, and general flow classes.
-
-            The flow MUST be divided into 4 sections according to this timing model:
-            1. Warm-up (${wP}% of time) - ${breath !== "none" ? "Include breath orientation" : ""}
-            2. Main Flow (${mP}% of time) - ${areas ? `Prioritize ${areas}` : ""}
-            3. Peak Sequence (${pP}% of time)
-            4. Cool-down + Relaxation (${cP}% of time) - ${medit !== "none" ? `Integrate ${medit}` : ""}
-
-            Total asanas to generate: ${numAsanas}. Distribute them logically across sections based on the percentage of time allocated to each.
-
-            SAFETY & TAILORING:
-            - If limitations like "${limits}" are specified, avoid poses that aggravate these areas (e.g., if "knee sensitivity", avoid deep lunges or suggest "blocks/blanket under knees").
-            - If props like "${props}" are available, suggest how to use them in the "clues" field.
             
-            CRITICAL GUIDELINES FOR ASANA DURATIONS:
-            - Evaluate each asana duration realistically for a safe and practical class.
-            - Output durations as ranges or breaths, NOT single fixed minute numbers (e.g., "20–40 seconds", "3–6 breaths").
-            - Strong standing poses: ~20–60 seconds
-            - Balance poses: ~10–40 seconds
-            - Seated stretches: ~30–120 seconds
-            - Backbends: ~15–60 seconds
-            - Restorative poses: ~2–10 minutes
-            - Transitions: ~3–10 seconds
-            - Ensure the total volume of asanas realistically fills the total ${args.duration} minute practice.
+            BIOMECHANICAL FLOW RULES:
+            - Minimize unnecessary repositioning between floor and standing (avoid flipping back and forth).
+            - Group poses logically by position: 
+              1. Standing/Vinyasa block
+              2. Balancing block
+              3. Seated/Floor block
+              4. Supine/Prone/Savasana block
+            - Each pose must logically follow the previous one using smooth transitions (e.g., Forward Fold → Lunge → Plank → Chaturanga).
+            - Include specific transition instructions in the "transition" field for how to move from THIS pose to the NEXT one.
+            - Ensure the sequence feels like a real, cohesive class, not a random list of exercises.
+            - For **Vinyasa** and **Hatha** styles, it is MANDATORY to include Sun Salutations (Surya Namaskar A or B) after the initial warm-up and before the main standing sequence. This is essential for heating the body and linking breath to movement.
+            - Include 1 round of Sun Salutation A or B. 
+            - Mention "Sun Salutation A" or "Sun Salutation B" clearly in the asana name so the UI can detect them.
+            - If the flow is short (<15 mins), include at least one round. If longer, include more.
+            - Ensure they are placed logically between the Warm-up and Main Flow sections.
 
-            Return a JSON object with:
+            ASANA DURATIONS:
+            - Use realistic durations. Avoid excessive holds (e.g., Tadasana should be 1-3 breaths, not 1 min, unless for a specific meditative purpose).
+            - Output durations as ranges or breaths (e.g., "5 breaths", "30-45s").
+            - Strong standing: 30-60s | Balance: 15-40s | Seated: 1-3 mins | Restorative: 3-10 mins.
+
+            The flow MUST be divided into 4 sections:
+            1. Warm-up (${wP}% of time) - Centering and opening.
+            2. Main Flow (${mP}% of time) - Building heat and strength.
+            3. Peak Sequence (${pP}% of time) - Highest intensity/complexity.
+            4. Cool-down + Relaxation (${cP}% of time) - Integration.
+
+            Total asanas: ${numAsanas}.
+
+            Return a JSON object:
+            - "practiceOpener": string (A welcoming 2-3 sentence introduction setting the intention for this specific flow)
+            - "meditationClosure": string (A grounding 2-3 sentence closing meditation to end this specific flow)
             - "summary": { "warmup": string, "mainFlow": string, "peak": string, "coolDown": string }
             - "sections": array of objects:
-                - "title": string (Section name)
+                - "title": string
                 - "asanas": array of objects:
-                    - "name": string (English name)
-                    - "sanskritName": string (Sanskrit name)
-                    - "duration": string (Realistic range/breaths, e.g. "30-60s" or "5 breaths")
-                    - "clues": string (Short teaching tips/comments on how to perform the asana, max 15 words)
-                    - "description": string (Detailed visual description)
+                    - "name": string
+                    - "sanskritName": string
+                    - "duration": string
+                    - "clues": string (Teaching tips, max 15 words)
+                    - "description": string (Visual/Alignment cues)
+                    - "transition": string (How to transition to the next pose, e.g., "On your next exhale, step the right foot back...")
             Strictly return ONLY the JSON object.`,
             config: {
                 responseMimeType: "application/json",
@@ -101,8 +108,10 @@ export const generate = action({
         });
         console.log(textResponse.text);
         const flow = JSON.parse(textResponse.text!) as {
+            practiceOpener: string;
+            meditationClosure: string;
             summary: { warmup: string; mainFlow: string; peak: string; coolDown: string };
-            sections: { title: string; asanas: { name: string; sanskritName: string; duration: string; clues: string; description: string }[] }[];
+            sections: { title: string; asanas: { name: string; sanskritName: string; duration: string; clues: string; description: string; transition: string }[] }[];
         };
 
         // 2. Map sections (Skipping AI Image generation for now as requested)
@@ -115,12 +124,15 @@ export const generate = action({
                     duration: asana.duration,
                     clues: asana.clues,
                     description: asana.description,
+                    transition: asana.transition,
                     image: null, // Image generation disabled
                 })),
             };
         });
 
         return {
+            practiceOpener: flow.practiceOpener,
+            meditationClosure: flow.meditationClosure,
             summary: flow.summary,
             sections: structuredSections,
         };
