@@ -278,7 +278,7 @@ const GenerateAsanas = () => {
                                         src={getAsanaImage(asana.name, asana.sanskritName)!}
                                         alt={asana.name}
                                         fill
-                                        className="object-contain"
+                                        className="object-contain mix-blend-multiply filter contrast-[1.1] brightness-[1.05]"
                                         sizes="(max-width: 1024px) 100vw, 256px"
                                       />
                                     ) : (
