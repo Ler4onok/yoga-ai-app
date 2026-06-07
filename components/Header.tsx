@@ -20,6 +20,8 @@ const Header = () => {
         <div className="flex items-center gap-6">
           <nav className="hidden md:flex items-center gap-8 mr-4">
             <Link href="/" className="text-sm font-bold text-gray-400 hover:text-gray-900 transition-colors uppercase tracking-widest">Home</Link>
+            <Link href="/library" className="text-sm font-bold text-gray-400 hover:text-gray-900 transition-colors uppercase tracking-widest">Library</Link>
+            <Link href="/pricing" className="text-sm font-bold text-gray-400 hover:text-gray-900 transition-colors uppercase tracking-widest">Pricing</Link>
             <Link href="/generate-asanas" className="text-sm font-bold text-blue-600 uppercase tracking-widest">Flow Builder</Link>
           </nav>
 
