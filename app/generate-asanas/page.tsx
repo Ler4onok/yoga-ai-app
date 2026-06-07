@@ -87,6 +87,7 @@ const GenerateAsanas = () => {
   const [visibleAsanaCount, setVisibleAsanaCount] = useState(0);
   const generateAsanas = useAction(api.asanas.generate);
   const [activeSequence, setActiveSequence] = useState<"CUSTOM" | "SUN_A" | "SUN_B">("CUSTOM");
+  const [showNotes, setShowNotes] = useState(true);
 
   // Scroll to top when switching between Sun Salutations and Custom flow, or when UI state changes
   React.useEffect(() => {
@@ -180,25 +181,18 @@ const GenerateAsanas = () => {
 
         {uiState === "RESULT" && flow && (
           <div className="space-y-12 animate-in fade-in duration-1000">
-            {/* Header Card */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center bg-white/80 backdrop-blur-md p-8 rounded-[2.5rem] shadow-xl shadow-blue-900/5 border border-white/50 gap-6">
               <div>
                 <h2 className="text-3xl font-black text-gray-900 tracking-tight">Your Custom Practice</h2>
                 <p className="text-gray-600 font-medium mt-2">{formData?.duration} mins • {formData?.style} • {formData?.focus}</p>
               </div>
-              <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+              <div className="flex items-center gap-4 bg-gray-50/50 px-6 py-3 rounded-2xl border border-gray-100 no-print shadow-sm">
+                <span className="text-[10px] font-black uppercase tracking-widest text-gray-500">Instructor Note</span>
                 <button
-                  onClick={onBackToFilters}
-                  className="px-8 py-4 bg-white text-gray-900 border border-gray-200 rounded-2xl font-bold hover:bg-gray-50 transition-all active:scale-95 uppercase tracking-widest text-[11px] cursor-pointer"
+                  onClick={() => setShowNotes(!showNotes)}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-all focus:outline-none ${showNotes ? 'bg-blue-600 shadow-inner' : 'bg-gray-200 shadow-inner'}`}
                 >
-                  New Flow
-                </button>
-                <button
-                  onClick={() => window.print()}
-                  className="px-8 py-4 bg-gray-900 text-white rounded-2xl font-bold hover:bg-gray-800 transition-all shadow-xl shadow-gray-200 active:scale-95 uppercase tracking-widest text-[11px] cursor-pointer flex items-center justify-center gap-2"
-                >
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
-                  Export PDF
+                  <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform ${showNotes ? 'translate-x-6' : 'translate-x-1'}`} />
                 </button>
               </div>
             </div>
@@ -232,29 +226,6 @@ const GenerateAsanas = () => {
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
                   Back to Main Flow
                 </button>
-              </div>
-            )}
-
-            {/* Timing Overview Grid (Only for Custom Flow) */}
-            {activeSequence === "CUSTOM" && (
-              <div className="bg-white/60 backdrop-blur-sm p-8 rounded-[2.5rem] shadow-sm border border-white animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <h2 className="text-xl font-black mb-8 text-gray-900 flex items-center gap-3">
-                  <span className="w-2 h-6 bg-blue-600 rounded-full"></span>
-                  PRACTICE STRUCTURE
-                </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {[
-                    { label: 'Warm-up', summary: flow.summary.warmup, color: 'text-orange-500', bg: 'bg-orange-50' },
-                    { label: 'Main Flow', summary: flow.summary.mainFlow, color: 'text-green-500', bg: 'bg-green-50' },
-                    { label: 'Peak', summary: flow.summary.peak, color: 'text-purple-500', bg: 'bg-purple-50' },
-                    { label: 'Cool-down', summary: flow.summary.coolDown, color: 'text-blue-500', bg: 'bg-blue-50' }
-                  ].map((pill, i) => (
-                    <div key={i} className="group p-6 rounded-3xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-all">
-                      <p className={`text-[11px] font-black uppercase mb-3 tracking-widest ${pill.color}`}>{pill.label}</p>
-                      <p className="text-sm text-gray-700 leading-relaxed font-medium">{pill.summary}</p>
-                    </div>
-                  ))}
-                </div>
               </div>
             )}
 
@@ -295,107 +266,123 @@ const GenerateAsanas = () => {
                         return (
                           <React.Fragment key={aIdx}>
                             <div
-                              className={`group bg-white rounded-[2.5rem] shadow-xl shadow-gray-200/40 border border-gray-50 p-4 md:p-6 transform transition-all duration-700 ease-out 
+                              className={`group bg-white rounded-[3rem] shadow-2xl shadow-gray-200/50 border border-gray-100 p-6 md:p-8 transform transition-all duration-700 ease-out 
                                 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                             >
-                              <div className="flex flex-col lg:flex-row gap-8">
-                                {/* Visual Area (Hidden in PDF) */}
-                                <div className="flex flex-col gap-3 no-print">
-                                  <div className="w-full lg:w-52 h-44 bg-gray-50 rounded-[2rem] overflow-hidden relative flex-shrink-0 group-hover:scale-[1.02] transition-transform duration-500">
+                              <div className="flex flex-col lg:flex-row gap-10">
+                                {/* Visual Area */}
+                                <div className="flex flex-col gap-4 no-print flex-shrink-0">
+                                  <div className="w-full lg:w-64 h-56 bg-transparent rounded-[2.5rem] overflow-hidden relative group-hover:scale-[1.03] transition-all duration-500">
                                     {getAsanaImage(asana.name, asana.sanskritName) ? (
                                       <Image
                                         src={getAsanaImage(asana.name, asana.sanskritName)!}
                                         alt={asana.name}
                                         fill
-                                        className="object-cover"
-                                        sizes="(max-width: 1024px) 100vw, 208px"
+                                        className="object-contain"
+                                        sizes="(max-width: 1024px) 100vw, 256px"
                                       />
                                     ) : (
-                                      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center">
-                                        <span className="text-5xl drop-shadow-sm">🧘‍♀️</span>
+                                      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-50 flex flex-col items-center justify-center p-6 text-center">
+                                        <span className="text-6xl drop-shadow-sm mb-4">🧘‍♀️</span>
+                                        <div className="w-full flex flex-col items-end gap-2">
+                                          <p className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest leading-tight">
+                                            no pic generated,<br />see references below
+                                          </p>
+                                          <svg className="w-4 h-4 text-end text-indigo-300 mb-[-60px]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 14l-7 7m0 0l-7-7m7 7V3" /></svg>
+                                        </div>
                                       </div>
                                     )}
                                   </div>
 
-                                  <div className="flex flex-col gap-2">
-                                    <div className="flex justify-center">
-                                      <span className="px-4 py-1.5 bg-white shadow-sm border border-gray-100/50 rounded-xl text-[11px] font-black uppercase tracking-widest text-gray-700 w-fit">
-                                        {asana.duration}
-                                      </span>
-                                    </div>
+                                  <div className="flex items-center justify-between px-2">
+                                    <span className="px-4 py-2 bg-blue-50/50 text-blue-700 rounded-2xl text-[11px] font-black uppercase tracking-widest border border-blue-100/50">
+                                      {asana.duration}
+                                    </span>
                                     <a
                                       href={`https://www.google.com/search?q=${encodeURIComponent(asana.name)}+yoga+pose&tbm=isch`}
                                       target="_blank"
                                       rel="noopener noreferrer"
-                                      className="flex items-center justify-center gap-2 px-3 py-1.5 bg-gray-50 hover:bg-white text-gray-500 hover:text-blue-600 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all border border-gray-100/50 hover:shadow-md no-print"
+                                      className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all no-print flex items-center gap-2 group/link"
+                                      title="Reference Pics"
                                     >
-                                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" /></svg>
-                                      Reference Pics
+                                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                      <span className="text-[10px] font-black uppercase tracking-widest">REFS</span>
                                     </a>
                                   </div>
                                 </div>
 
                                 {/* Content Area */}
-                                <div className="flex-1 flex flex-col justify-between py-2">
+                                <div className="flex-1 flex flex-col justify-between">
                                   <div>
-                                    <div className="flex flex-wrap items-center gap-4 mb-3">
-                                      <div className="flex items-center gap-2">
-                                        <h4 className="text-3xl font-black text-gray-900 tracking-tight group-hover:text-blue-600 transition-colors">
-                                          {asana.name}
-                                        </h4>
-                                        <button
-                                          onClick={() => {
-                                            navigator.clipboard.writeText(asana.name);
-                                            // Simple feedback could be added here
-                                          }}
-                                          className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all cursor-pointer no-print"
-                                          title="Copy asana name"
-                                        >
-                                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>
-                                        </button>
+                                    <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
+                                      <div className="space-y-1">
+                                        <div className="flex items-center gap-3">
+                                          <h4 className="text-4xl font-black text-gray-900 tracking-tight leading-tight">
+                                            {asana.name}
+                                          </h4>
+                                          {/* <button
+                                            onClick={() => {
+                                              navigator.clipboard.writeText(asana.name);
+                                            }}
+                                            className="p-2.5 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-2xl transition-all cursor-pointer no-print border border-transparent hover:border-blue-100"
+                                            title="Copy name"
+                                          >
+                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>
+                                          </button> */}
+                                        </div>
+                                        {asana.sanskritName && (
+                                          <p className="text-indigo-500 font-bold italic text-lg tracking-wide">
+                                            {asana.sanskritName}
+                                          </p>
+                                        )}
                                       </div>
-                                      {asana.sanskritName && (
-                                        <p className="text-blue-600/60 font-bold italic text-sm tracking-wide bg-blue-50 px-3 py-1 rounded-full border border-blue-100/50">
-                                          {asana.sanskritName}
-                                        </p>
-                                      )}
                                     </div>
-                                    <p className="text-gray-600 text-base leading-relaxed font-medium mt-4 line-clamp-3 group-hover:line-clamp-none transition-all duration-500">
+
+                                    <p className="text-gray-600 text-lg leading-relaxed font-medium">
                                       {asana.description}
                                     </p>
 
-                                    {/* Inline Sequence Preview Button for Sun Salutations */}
+                                    {/* Special Sequence Callouts */}
                                     {(asana.name.toLowerCase().includes("sun salutation a") || asana.name.toLowerCase().includes("surya namaskar a")) && (
-                                      <div className="mt-4">
+                                      <div className="mt-6">
                                         <button
                                           onClick={() => setActiveSequence("SUN_A")}
-                                          className="px-6 py-2 bg-orange-50 text-orange-600 rounded-xl font-bold hover:bg-orange-100 transition-all shadow-sm border border-orange-200 uppercase tracking-widest text-[11px] flex items-center gap-2 cursor-pointer"
+                                          className="px-6 py-3 bg-gradient-to-r from-orange-50 to-amber-50 text-orange-700 rounded-2xl font-black hover:shadow-lg hover:shadow-orange-100 transition-all border border-orange-100 uppercase tracking-widest text-[11px] flex items-center gap-3 cursor-pointer"
                                         >
-                                          <span>☀️</span> View Sequence Details
+                                          <span className="text-lg">☀️</span> View Full Sequence
                                         </button>
                                       </div>
                                     )}
                                     {(asana.name.toLowerCase().includes("sun salutation b") || asana.name.toLowerCase().includes("surya namaskar b")) && (
-                                      <div className="mt-4">
+                                      <div className="mt-6">
                                         <button
                                           onClick={() => setActiveSequence("SUN_B")}
-                                          className="px-6 py-2 bg-orange-50 text-orange-600 rounded-xl font-bold hover:bg-orange-100 transition-all shadow-sm border border-orange-200 uppercase tracking-widest text-[11px] flex items-center gap-2 cursor-pointer"
+                                          className="px-6 py-3 bg-gradient-to-r from-orange-50 to-amber-50 text-orange-700 rounded-2xl font-black hover:shadow-lg hover:shadow-orange-100 transition-all border border-orange-100 uppercase tracking-widest text-[11px] flex items-center gap-3 cursor-pointer"
                                         >
-                                          <span>🌅</span> View Sequence Details
+                                          <span className="text-lg">🌅</span> View Full Sequence
                                         </button>
                                       </div>
                                     )}
                                   </div>
 
-                                  <div className="mt-8 p-5 bg-gray-50 rounded-[1.75rem] border border-gray-100/50 group-hover:bg-blue-50/50 group-hover:border-blue-100 transition-all duration-300 no-print">
-                                    <p className="text-[11px] font-black text-blue-600 uppercase mb-2 tracking-[0.2em] flex items-center gap-2">
-                                      <span className="w-1.5 h-1.5 bg-blue-600 shadow-[0_0_10px_rgba(37,99,235,0.4)] rounded-full animate-pulse"></span>
-                                      INSTRUCTOR CLUE
-                                    </p>
-                                    <p className="text-gray-700 text-sm md:text-base font-semibold italic leading-relaxed">
-                                      &ldquo;{asana.clues || 'Maintain continuous awareness of your breath and find stability in the posture.'}&rdquo;
-                                    </p>
-                                  </div>
+                                  {showNotes && (
+                                    <div className="mt-10 group/clue relative">
+                                      <div className="absolute inset-0 bg-blue-600/5 blur-2xl rounded-[3rem] group-hover/clue:bg-blue-600/10 transition-colors duration-500 no-print" />
+                                      <div className="relative p-6 md:p-8 bg-blue-50/30 backdrop-blur-sm rounded-[2.5rem] border border-blue-100/50 no-print">
+                                        <div className="flex items-center gap-3 mb-3">
+                                          <div className="w-8 h-8 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-200">
+                                            <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                          </div>
+                                          <p className="text-[11px] font-black text-blue-800 uppercase tracking-[0.25em]">
+                                            Instructor&apos;s Note
+                                          </p>
+                                        </div>
+                                        <p className="text-gray-800 text-lg font-semibold italic leading-relaxed">
+                                          &ldquo;{asana.clues || 'Focus on your breath and find stability.'}&rdquo;
+                                        </p>
+                                      </div>
+                                    </div>
+                                  )}
                                 </div>
                               </div>
                             </div>
@@ -437,6 +424,23 @@ const GenerateAsanas = () => {
                   </div>
                 </div>
               )}
+
+              {/* Bottom Actions */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center py-12 no-print">
+                <button
+                  onClick={onBackToFilters}
+                  className="w-full sm:w-auto px-12 py-5 bg-white text-gray-900 border border-gray-200 rounded-[2rem] font-bold hover:bg-gray-50 transition-all active:scale-95 uppercase tracking-widest text-xs cursor-pointer shadow-sm"
+                >
+                  New Flow
+                </button>
+                <button
+                  onClick={() => window.print()}
+                  className="w-full sm:w-auto px-12 py-5 bg-gray-900 text-white rounded-[2rem] font-bold hover:bg-gray-800 transition-all shadow-xl shadow-gray-200 active:scale-95 uppercase tracking-widest text-xs cursor-pointer flex items-center justify-center gap-3"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
+                  Export PDF
+                </button>
+              </div>
             </div>
           </div>
         )}
