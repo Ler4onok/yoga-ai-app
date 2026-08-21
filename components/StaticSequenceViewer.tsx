@@ -37,7 +37,7 @@ export default function StaticSequenceViewer({ flow, otherFlows }: StaticSequenc
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        
+
         {/* Back Link */}
         <div className="mb-8 no-print">
           <Link
@@ -78,14 +78,12 @@ export default function StaticSequenceViewer({ flow, otherFlows }: StaticSequenc
             <span className="text-[10px] font-black uppercase tracking-widest text-gray-500">Instructor Notes</span>
             <button
               onClick={() => setShowNotes(!showNotes)}
-              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-all focus:outline-none ${
-                showNotes ? "bg-blue-600 shadow-inner" : "bg-gray-200 shadow-inner"
-              }`}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-all focus:outline-none ${showNotes ? "bg-blue-600 shadow-inner" : "bg-gray-200 shadow-inner"
+                }`}
             >
               <span
-                className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform ${
-                  showNotes ? "translate-x-6" : "translate-x-1"
-                }`}
+                className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-sm transition-transform ${showNotes ? "translate-x-6" : "translate-x-1"
+                  }`}
               />
             </button>
           </div>
@@ -108,7 +106,7 @@ export default function StaticSequenceViewer({ flow, otherFlows }: StaticSequenc
 
         {/* Asana List */}
         <div className="space-y-20 print:space-y-12">
-          
+
           {/* Practice Opener */}
           {flow.practiceOpener && (
             <div className="bg-indigo-50/50 p-8 rounded-[2.5rem] border border-indigo-100/50 animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -128,7 +126,7 @@ export default function StaticSequenceViewer({ flow, otherFlows }: StaticSequenc
           {flow.sections.map((section, sIdx) => {
             return (
               <div key={sIdx} className="relative animate-in fade-in slide-in-from-bottom-8 duration-700">
-                
+
                 {/* Section Header */}
                 <div className="sticky top-24 z-10 mb-10">
                   <div className="flex items-center gap-4 bg-white/60 backdrop-blur-md px-6 py-3 rounded-2xl w-fit shadow-sm border border-white">
@@ -148,7 +146,7 @@ export default function StaticSequenceViewer({ flow, otherFlows }: StaticSequenc
                       <React.Fragment key={aIdx}>
                         <div className="group bg-white rounded-[3rem] shadow-2xl shadow-gray-200/50 border border-gray-100 p-6 md:p-8 transform transition-all duration-700 ease-out opacity-100 translate-y-0">
                           <div className="flex flex-col lg:flex-row gap-10">
-                            
+
                             {/* Visual Area */}
                             <div className="flex flex-col gap-4 no-print flex-shrink-0">
                               <div className="w-full lg:w-64 h-56 bg-transparent rounded-[2.5rem] overflow-hidden relative group-hover:scale-[1.03] transition-all duration-500">
