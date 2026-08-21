@@ -16,7 +16,7 @@ const Footer = () => {
     <footer className="bg-white border-t border-gray-100 pt-16 pb-8">
 
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-12 mb-12">
           <div className="col-span-1 md:col-span-2">
             <Link href="/" className="flex items-center gap-2 mb-6 group">
               <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-200">
@@ -58,6 +58,15 @@ const Footer = () => {
               <li><Link href="/generate-asanas" className="text-gray-500 hover:text-blue-600 text-sm transition-colors">Flow Builder</Link></li>
               <li><Link href="/library" className="text-gray-500 hover:text-blue-600 text-sm transition-colors">Asana Library</Link></li>
               <li><Link href="/pricing" className="text-gray-500 hover:text-blue-600 text-sm transition-colors">Pricing</Link></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-bold text-gray-900 mb-6 uppercase tracking-widest text-xs">Static Flows</h4>
+            <ul className="space-y-4">
+              <li><Link href="/yoga-sequences/beginners" className="text-gray-500 hover:text-blue-600 text-sm transition-colors">Beginner Vinyasa (60m)</Link></li>
+              <li><Link href="/yoga-sequences/flexibility" className="text-gray-500 hover:text-blue-600 text-sm transition-colors">Yin Flexibility (60m)</Link></li>
+              <li><Link href="/yoga-sequences/strength" className="text-gray-500 hover:text-blue-600 text-sm transition-colors">Ashtanga Strength (60m)</Link></li>
             </ul>
           </div>
 

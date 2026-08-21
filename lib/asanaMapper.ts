@@ -58,9 +58,10 @@ export function getAsanaImage(name: string, sanskritName?: string): string | nul
         if (pigeonMatch) return pigeonMatch;
     }
     if (normName.includes('chaturanga')) {
-        const chaturangaMatch = checkMatch('chaturangapose');
+        const chaturangaMatch = checkMatch('fourlimbedstaffpose');
         if (chaturangaMatch) return chaturangaMatch;
     }
+
 
     // 3. Handle Right/Left/Air/etc by stripping them
     const strippedName = normName.replace(/right|left|air|side/g, '');
