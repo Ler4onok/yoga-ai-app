@@ -59,7 +59,7 @@ export default function LibraryPage() {
       'cow face pose': 'Gomukhasana',
       'cow pose': 'Bitilasana',
       'crow pose': 'Bakasana',
-      'dancer pose': 'Natarajasana',
+      'eagle pose': 'Garudasana',
       'dancers pose': 'Natarajasana',
       'downward facing dog': 'Adho Mukha Svanasana',
       'easy pose': 'Sukhasana',
@@ -89,7 +89,7 @@ export default function LibraryPage() {
       'wheel pose': 'Urdhva Dhanurasana',
       'supine spinal twist pose': 'Supta Matsyendrasana'
     };
-    
+
     for (const [english, sanskrit] of Object.entries(mapping)) {
       if (key.includes(english)) return sanskrit;
     }
@@ -114,7 +114,7 @@ export default function LibraryPage() {
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {ASANA_IMAGES.map((image, index) => (
-            <div 
+            <div
               key={index}
               className="group bg-gray-50/50 rounded-[3.5rem] border border-gray-100 p-6 flex flex-col items-center hover:bg-white hover:shadow-2xl hover:shadow-blue-900/5 transition-all duration-500 hover:-translate-y-1"
             >
