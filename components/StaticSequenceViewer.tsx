@@ -78,7 +78,7 @@ export default function StaticSequenceViewer({ flow, otherFlows }: StaticSequenc
             <span className="text-[10px] font-black uppercase tracking-widest text-gray-500">Instructor Notes</span>
             <button
               onClick={() => setShowNotes(!showNotes)}
-              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-all focus:outline-none ${showNotes ? "bg-blue-600 shadow-inner" : "bg-gray-200 shadow-inner"
+              className={`relative w-[58px] inline-flex h-6 w-11 items-center rounded-full transition-all focus:outline-none ${showNotes ? "bg-blue-600 shadow-inner" : "bg-gray-200 shadow-inner"
                 }`}
             >
               <span
@@ -141,7 +141,7 @@ export default function StaticSequenceViewer({ flow, otherFlows }: StaticSequenc
                 <div className="space-y-8">
                   {section.asanas.map((asana, aIdx) => {
                     const img = getAsanaImage(asana.name, asana.sanskritName);
-
+                    console.log({ a: asana.name, i: img, aa: getAsanaImage(asana.name, asana.sanskritName) })
                     return (
                       <React.Fragment key={aIdx}>
                         <div className="group bg-white rounded-[3rem] shadow-2xl shadow-gray-200/50 border border-gray-100 p-6 md:p-8 transform transition-all duration-700 ease-out opacity-100 translate-y-0">

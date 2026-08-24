@@ -3,13 +3,13 @@ import { ImageResponse } from 'next/og'
 export const runtime = 'edge'
 
 export const size = {
-  width: 48,
-  height: 48,
+  width: 180,
+  height: 180,
 }
 
 export const contentType = 'image/png'
 
-export default function Icon() {
+export default function AppleIcon() {
   return new ImageResponse(
     (
       <div
@@ -20,20 +20,20 @@ export default function Icon() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          borderRadius: '10px',
+          borderRadius: '38px',
           position: 'relative',
         }}
       >
-        {/* Soft inner glow */}
+        {/* Soft radial glow */}
         <div
           style={{
             position: 'absolute',
-            width: '70%',
-            height: '70%',
+            width: '75%',
+            height: '75%',
             borderRadius: '50%',
-            background: 'rgba(255,255,255,0.08)',
-            top: '8%',
-            left: '8%',
+            background: 'rgba(255,255,255,0.10)',
+            top: '10%',
+            left: '10%',
           }}
         />
         <svg
@@ -41,10 +41,10 @@ export default function Icon() {
           viewBox="0 0 24 24"
           fill="none"
           stroke="white"
-          strokeWidth="1.75"
+          strokeWidth="1.6"
           strokeLinecap="round"
           strokeLinejoin="round"
-          style={{ width: '62%', height: '62%', position: 'relative' }}
+          style={{ width: '60%', height: '60%', position: 'relative' }}
         >
           <circle cx="12" cy="5" r="2" />
           <path d="M12 7v6" />
