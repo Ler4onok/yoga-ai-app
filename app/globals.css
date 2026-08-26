@@ -127,127 +127,133 @@
     /* Page setup */
     @page {
         size: A4 portrait;
-        margin: 5mm;
-    }
-
-    /* Reset everything for maximum compactness */
-    * {
-        margin: 0 !important;
-        padding: 0 !important;
-        gap: 0 !important;
-        line-height: 1.05 !important;
-        box-shadow: none !important;
-        break-inside: avoid !important;
-        page-break-inside: avoid !important;
+        margin: 12mm;
     }
 
     body {
         background: #fff !important;
-        color: #000 !important;
-        font-size: 3pt !important;
+        color: #111 !important;
+        font-size: 9pt !important;
+        line-height: 1.4 !important;
     }
 
-    /* Hide non-essential UI */
+    /* Hide chrome: nav, decorative icons/photos, and anything interactive.
+       Note: CSS attribute selectors match the real DOM `class` attribute, not
+       React's `className` prop, so selectors below use `class=`, never `className=`. */
     header,
     footer,
-    .no-print,
-    img,
-    svg,
+    nav,
     button,
-    div[className*="bg-indigo-50"],
-    div[className*="bg-purple-50"],
-    div[className*="bg-gray-100"],
-    div[className*="bg-white/80"],
-    div[className*="bg-white/60"],
-    div[className*="w-10 h-10"] {
+    svg,
+    img,
+    .no-print {
         display: none !important;
     }
 
-    /* Typography compression */
-    h1,
-    h2,
-    h3,
-    h4 {
-        font-size: 6pt !important;
-        font-weight: bold !important;
-    }
-
-    p,
-    span,
-    div {
-        font-size: 5pt !important;
-    }
-
-    p {
-        display: inline !important;
-    }
-
-    /* Remove Tailwind spacing leftovers */
-    .print\:space-y-12,
-    div[className*="space-y-20"] {
-        gap: 0 !important;
-    }
-
-    /* Main layout: dense grid instead of columns */
-    div[className*="space-y-8"] {
-        display: grid !important;
-        grid-template-columns: repeat(4, 1fr) !important;
-        gap: 0.2rem !important;
-    }
-
-    /* Asana cards */
-    div[className*="bg-white rounded"] {
-        padding: 0.15rem !important;
-        margin-bottom: 0.15rem !important;
-        border: 0.5px solid #ddd !important;
-        border-radius: 2px !important;
-    }
-
-    /* Section headers */
-    div[className*="sticky"] {
-        font-size: 6pt !important;
-        background: #f9f9f9 !important;
-        margin: 0.2rem 0 !important;
-        padding: 0.1rem !important;
-    }
-
-    /* Duration tag */
-    span[className*="bg-white shadow-sm"] {
-        font-size: 4pt !important;
-        padding: 0 0.15rem !important;
-        border: 0.5px solid #ccc !important;
-    }
-
-    /* Opener / closer ultra-compact */
-    div[className*="bg-indigo-50/50"],
-    div[className*="bg-purple-50/50"] {
-        background: transparent !important;
-        border: none !important;
-    }
-
-    h3[className*="text-xl"],
-    h4[className*="text-3xl"] {
-        font-size: 6pt !important;
-        display: inline !important;
-    }
-
-    p[className*="text-lg"] {
-        font-size: 5pt !important;
-        display: inline !important;
-    }
-
-    /* Transition blocks */
-    div[className*="mt-4 flex items-start"] {
-        margin: 0 !important;
-        padding: 0 !important;
-        border: none !important;
-        background: transparent !important;
-    }
-
-    /* Disable animations */
     .animate-in {
         animation: none !important;
         opacity: 1 !important;
         transform: none !important;
+    }
+
+    /* Tighten the vertical rhythm between sections and between cards within a section */
+    .space-y-20>:not([hidden])~:not([hidden]),
+    .space-y-12>:not([hidden])~:not([hidden]) {
+        margin-top: 10pt !important;
+    }
+
+    .space-y-8>:not([hidden])~:not([hidden]) {
+        margin-top: 6pt !important;
+    }
+
+    /* Hero header: keep title/description/stats, strip decorative chrome */
+    div[class*="bg-white/80 backdrop-blur-md"] {
+        background: transparent !important;
+        box-shadow: none !important;
+        border: none !important;
+        border-radius: 0 !important;
+        padding: 0 0 6pt 0 !important;
+    }
+
+    h1,
+    h2 {
+        font-size: 16pt !important;
+        margin-bottom: 2pt !important;
+    }
+
+    /* Section header pill: keep the title, drop sticky/backdrop/shadow chrome */
+    .sticky {
+        position: static !important;
+        top: auto !important;
+    }
+
+    div[class*="bg-white/60 backdrop-blur-md"] {
+        background: transparent !important;
+        box-shadow: none !important;
+        border: none !important;
+        border-bottom: 1pt solid #ccc !important;
+        border-radius: 0 !important;
+        padding: 0 0 3pt 0 !important;
+        width: 100% !important;
+    }
+
+    div[class*="w-8 h-8 bg-gray-900"] {
+        display: none !important;
+    }
+
+    h3 {
+        font-size: 11pt !important;
+        margin: 6pt 0 3pt 0 !important;
+    }
+
+    /* Practice Opener / Meditation Closure: keep the text, strip the colored card chrome */
+    div[class*="bg-indigo-50/50"],
+    div[class*="bg-purple-50/50"] {
+        background: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+    }
+
+    div[class*="bg-indigo-50/50"] div[class*="w-10 h-10"],
+    div[class*="bg-purple-50/50"] div[class*="w-10 h-10"] {
+        display: none !important;
+    }
+
+    /* Asana cards: compact, bordered, never split across a page break */
+    div[class*="bg-white rounded-[3rem]"] {
+        box-shadow: none !important;
+        border: 1pt solid #ddd !important;
+        border-radius: 4pt !important;
+        padding: 8pt !important;
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+    }
+
+    h4 {
+        font-size: 13pt !important;
+        margin-bottom: 1pt !important;
+    }
+
+    p {
+        font-size: 9pt !important;
+        margin-bottom: 3pt !important;
+    }
+
+    span {
+        font-size: 8pt !important;
+    }
+
+    /* Duration tag: small bordered chip instead of a soft-shadow pill */
+    span[class*="bg-blue-50/50 text-blue-700"] {
+        border: 0.5pt solid #bbb !important;
+        border-radius: 3pt !important;
+        padding: 1pt 4pt !important;
+        font-size: 7pt !important;
+    }
+
+    /* Transition line between poses: the on-screen animated row is under .no-print already;
+       just tighten the simplified print-only line's spacing */
+    .py-6.flex.flex-col.items-center {
+        padding: 3pt 0 !important;
     }
 }

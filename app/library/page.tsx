@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 // ─── Category definitions ────────────────────────────────────────────────────
-type Category = "all" | "standing" | "seated" | "supine" | "prone" | "inversion" | "balance" | "twist";
+type Category = "all" | "standing" | "seated" | "supine" | "prone" | "inversion" | "balance" | "twist" | "pranayama";
 
 const CATEGORIES: { id: Category; label: string; emoji: string }[] = [
   { id: "all", label: "All", emoji: "✦" },
@@ -17,6 +17,7 @@ const CATEGORIES: { id: Category; label: string; emoji: string }[] = [
   { id: "inversion", label: "Inversions", emoji: "🙃" },
   { id: "balance", label: "Balance", emoji: "⚖️" },
   { id: "twist", label: "Twists", emoji: "🌀" },
+  { id: "pranayama", label: "Pranayama", emoji: "🌬️" },
 ];
 
 // Map each image filename to its categories (can belong to multiple)
@@ -148,7 +149,30 @@ const CATEGORY_MAP: Record<string, Category[]> = {
   "sun_salutation_b.png": ["standing"],
   "head-to-knee_pose_left.png": ["seated"],
   "head_to_knee_pose.png": ["seated"],
+  // Pranayama
+  "bee_breath.png": ["pranayama"],
+  "deep_belly_breathing.png": ["pranayama"],
+  "Nadi_Shodhana_Pranayama.png": ["pranayama"],
 };
+
+// How-to instructions for pranayama (breathing) techniques, keyed by display name (lowercase).
+const PRANAYAMA_HOWTO: Record<string, string> = {
+  "bee breath": "Sit tall with eyes closed. Inhale deeply through the nose, then exhale slowly while humming like a bee, keeping the mouth closed.",
+  "deep belly breathing": "Sit or lie down. Place a hand on your belly. Inhale slowly through the nose, letting the belly rise; exhale fully, feeling the belly fall.",
+  "nadi shodhana pranayama": "Sit tall. Close the right nostril with your thumb and inhale through the left. Close the left nostril, release the right, and exhale. Inhale through the right, then switch and exhale through the left. Continue alternating.",
+  "three part breath": "Sit or lie down. Inhale in three stages: fill the belly, then the ribcage, then the chest. Exhale slowly in reverse, releasing the chest, ribcage, then belly.",
+  "cooling breath": "Curl the tongue lengthwise (or purse the lips if you can't curl it) and inhale slowly through the mouth like sipping through a straw. Close the mouth and exhale slowly through the nose.",
+};
+
+function getPranayamaHowTo(name: string): string | null {
+  return PRANAYAMA_HOWTO[name.toLowerCase()] ?? null;
+}
+
+// Pranayama techniques with no matching image yet — shown with a placeholder visual.
+const VIRTUAL_ENTRIES: { name: string; sanskrit: string; categories: Category[] }[] = [
+  { name: "Three Part Breath", sanskrit: "Dirga Pranayama", categories: ["pranayama"] },
+  { name: "Cooling Breath", sanskrit: "Sitali Pranayama", categories: ["pranayama"] },
+];
 
 function getCategories(filename: string): Category[] {
   return CATEGORY_MAP[filename] ?? ["standing"];
@@ -222,18 +246,47 @@ function getSanskrit(filename: string): string | null {
   return null;
 }
 
+// ─── Unified entry list (real images + image-less pranayama techniques) ──────
+interface LibraryEntry {
+  key: string;
+  image: string | null;
+  name: string;
+  sanskrit: string | null;
+  categories: Category[];
+  howTo: string | null;
+}
+
+const LIBRARY_ENTRIES: LibraryEntry[] = [
+  ...ASANA_IMAGES.map((img): LibraryEntry => ({
+    key: img,
+    image: `/asanas/${img}`,
+    name: formatName(img),
+    sanskrit: getSanskrit(img),
+    categories: getCategories(img),
+    howTo: getPranayamaHowTo(formatName(img)),
+  })),
+  ...VIRTUAL_ENTRIES.map((v): LibraryEntry => ({
+    key: v.name,
+    image: null,
+    name: v.name,
+    sanskrit: v.sanskrit,
+    categories: v.categories,
+    howTo: getPranayamaHowTo(v.name),
+  })),
+];
+
 // ─── Component ───────────────────────────────────────────────────────────────
 export default function LibraryPage() {
   const [activeFilter, setActiveFilter] = useState<Category>("all");
   const [search, setSearch] = useState("");
 
   const filtered = useMemo(() => {
-    return ASANA_IMAGES.filter((img) => {
+    return LIBRARY_ENTRIES.filter((entry) => {
       const matchesCategory =
-        activeFilter === "all" || getCategories(img).includes(activeFilter);
+        activeFilter === "all" || entry.categories.includes(activeFilter);
       const matchesSearch =
         search.trim() === "" ||
-        formatName(img).toLowerCase().includes(search.toLowerCase());
+        entry.name.toLowerCase().includes(search.toLowerCase());
       return matchesCategory && matchesSearch;
     });
   }, [activeFilter, search]);
@@ -325,23 +378,32 @@ export default function LibraryPage() {
           </div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {filtered.map((image, index) => (
+            {filtered.map((entry) => (
               <div
-                key={index}
+                key={entry.key}
                 className="group bg-gray-50/50 rounded-[3.5rem] border border-gray-100 p-6 flex flex-col items-center hover:bg-white hover:shadow-2xl hover:shadow-blue-900/5 transition-all duration-500 hover:-translate-y-1"
               >
                 <div className="w-full aspect-square relative mb-6 rounded-[2.5rem] overflow-hidden bg-white shadow-inner">
-                  <Image
-                    src={`/asanas/${image}`}
-                    alt={formatName(image)}
-                    fill
-                    className="object-contain mix-blend-multiply filter contrast-[1.1] brightness-[1.05] transition-transform duration-700 group-hover:scale-110"
-                  />
+                  {entry.image ? (
+                    <Image
+                      src={entry.image}
+                      alt={entry.name}
+                      fill
+                      className="object-contain mix-blend-multiply filter contrast-[1.1] brightness-[1.05] transition-transform duration-700 group-hover:scale-110"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-50 flex flex-col items-center justify-center p-4 text-center">
+                      <span className="text-5xl drop-shadow-sm mb-2">🌬️</span>
+                      <p className="text-[9px] font-bold text-indigo-400 uppercase tracking-widest leading-tight">
+                        no pic yet
+                      </p>
+                    </div>
+                  )}
                 </div>
 
                 {/* Category pills */}
                 <div className="flex flex-wrap gap-1 justify-center mb-3">
-                  {getCategories(image).map((cat) => (
+                  {entry.categories.map((cat) => (
                     <span
                       key={cat}
                       onClick={() => setActiveFilter(cat)}
@@ -353,11 +415,17 @@ export default function LibraryPage() {
                 </div>
 
                 <h3 className="text-center font-black text-gray-900 text-sm tracking-tight uppercase group-hover:text-blue-600 transition-colors">
-                  {formatName(image)}
+                  {entry.name}
                 </h3>
-                {getSanskrit(image) && (
+                {entry.sanskrit && (
                   <p className="text-[10px] text-blue-500 font-black italic uppercase tracking-widest mt-2">
-                    {getSanskrit(image)}
+                    {entry.sanskrit}
+                  </p>
+                )}
+                {entry.howTo && (
+                  <p className="text-[11px] text-gray-500 font-medium leading-relaxed mt-3 text-center">
+                    <span className="text-gray-700 font-black uppercase tracking-widest text-[9px] block mb-1">How to</span>
+                    {entry.howTo}
                   </p>
                 )}
               </div>
