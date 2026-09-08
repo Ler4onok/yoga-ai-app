@@ -4,10 +4,10 @@ import StaticSequenceViewer from "@/components/StaticSequenceViewer";
 import { STATIC_FLOWS } from "@/lib/staticFlows";
 
 export const metadata: Metadata = {
-  title: "60-Minute Beginner Vinyasa Flow | Yoga Sequences | YoflowAI",
+  title: "60-Minute Beginner Vinyasa Flow | Yoga Sequences | GenFlowAI",
   description: "A curated, beginner-friendly 60-minute Vinyasa yoga sequence. Connect breath with movement, open your spine, and learn foundational postures like Downward Dog and Warrior I.",
   alternates: {
-    canonical: "https://yoflow.app/yoga-sequences/beginners"
+    canonical: "https://genflowai.app/yoga-sequences/beginners"
   },
   keywords: [
     "beginner vinyasa flow",
@@ -19,14 +19,14 @@ export const metadata: Metadata = {
     "beginner flow guide"
   ],
   openGraph: {
-    title: "60-Minute Beginner Vinyasa Flow | Yoga Sequences | YoflowAI",
+    title: "60-Minute Beginner Vinyasa Flow | Yoga Sequences | GenFlowAI",
     description: "A curated, beginner-friendly 60-minute Vinyasa yoga sequence. Connect breath with movement, open your spine, and learn foundational postures.",
-    url: "https://yoflow.app/yoga-sequences/beginners",
-    siteName: "YoflowAI",
+    url: "https://genflowai.app/yoga-sequences/beginners",
+    siteName: "GenFlowAI",
   },
   twitter: {
     card: "summary_large_image",
-    title: "60-Minute Beginner Vinyasa Flow | Yoga Sequences | YoflowAI",
+    title: "60-Minute Beginner Vinyasa Flow | Yoga Sequences | GenFlowAI",
     description: "A curated, beginner-friendly 60-minute Vinyasa yoga sequence. Connect breath with movement, open your spine, and learn foundational postures.",
   }
 };

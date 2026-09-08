@@ -15,6 +15,9 @@ import type {
 } from "convex/server";
 import type * as asanas from "../asanas.js";
 import type * as http from "../http.js";
+import type * as stripeClient from "../stripeClient.js";
+import type * as subscriptions from "../subscriptions.js";
+import type * as tiers from "../tiers.js";
 import type * as users from "../users.js";
 
 /**
@@ -28,6 +31,9 @@ import type * as users from "../users.js";
 declare const fullApi: ApiFromModules<{
   asanas: typeof asanas;
   http: typeof http;
+  stripeClient: typeof stripeClient;
+  subscriptions: typeof subscriptions;
+  tiers: typeof tiers;
   users: typeof users;
 }>;
 export declare const api: FilterApi<

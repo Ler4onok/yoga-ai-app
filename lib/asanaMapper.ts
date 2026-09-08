@@ -34,6 +34,7 @@ const SEMANTIC_ALIASES: { test: (n: string) => boolean; target: string }[] = [
     { test: (n) => n.includes('seatedforwardbend') || n.includes('paschimottanasana'), target: 'seatedforwardfold' },
     { test: (n) => n === 'vinyasa' || n.includes('planktochaturanga') || n.includes('phalakasanatochaturanga'), target: 'chaturangapose' },
     { test: (n) => n.includes('balancingtiger') || n.includes('vyaghrasana') || n.includes('tigerpose'), target: 'birddogbalancingtiger' },
+    { test: (n) => n.includes('supine') && n.includes('twist'), target: 'supinetwist' },
 ];
 
 export function getAsanaImage(name: string, sanskritName?: string): string | null {

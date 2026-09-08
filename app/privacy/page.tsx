@@ -33,7 +33,7 @@ export default function PrivacyPage() {
           <section className="mb-12 border-t border-gray-100 pt-12">
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Contact Us</h2>
             <p className="text-gray-600">
-              If you have any questions about this Privacy Policy, please contact us at privacy@yoflowai.com.
+              If you have any questions about this Privacy Policy, please contact us at privacy@genflowai.com.
             </p>
           </section>
         </div>

@@ -7,7 +7,24 @@ export default defineSchema({
     email: v.string(),
     image: v.optional(v.string()),
     clerkId: v.string(),
-  }).index("by_clerk_id", ["clerkId"]),
+    // Lifetime count, gates the free tier's 5-generation limit.
+    totalGenerations: v.optional(v.number()),
+    // Count within the current billing period, gates a subscriber's monthly limit.
+    periodGenerations: v.optional(v.number()),
+    stripeCustomerId: v.optional(v.string()),
+    // The subscription currently backing the user's plan. Used to make sure a
+    // cancellation event for an old/duplicate subscription can't wipe out a
+    // newer one that has since replaced it.
+    stripeSubscriptionId: v.optional(v.string()),
+    subscriptionTier: v.optional(
+      v.union(v.literal("starter"), v.literal("growth"), v.literal("pro"))
+    ),
+    subscriptionStatus: v.optional(v.string()),
+    currentPeriodStart: v.optional(v.number()),
+    currentPeriodEnd: v.optional(v.number()),
+  })
+    .index("by_clerk_id", ["clerkId"])
+    .index("by_stripe_customer_id", ["stripeCustomerId"]),
 
   asanas: defineTable({
     name: v.string(),

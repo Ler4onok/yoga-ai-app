@@ -17,28 +17,28 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "YoflowAI | Intelligent Yoga Flow Generator",
-  description: "Build your perfect yoga practice in seconds. YoflowAI generates beautiful, personalized yoga flows tailored to your body, goals, and time constraints. Discover smart sequences, visual guidance, and expert cues.",
+  title: "GenFlowAI | Intelligent Yoga Flow Generator",
+  description: "Build your perfect yoga practice in seconds. GenFlowAI generates beautiful, personalized yoga flows tailored to your body, goals, and time constraints. Discover smart sequences, visual guidance, and expert cues.",
   keywords: ["yoga", "yoga flow", "yoga sequence", "yoga generator", "AI yoga", "vinyasa", "hatha", "custom yoga flow", "yoga planner", "yoga routines"],
-  authors: [{ name: "YoflowAI Team" }],
-  creator: "YoflowAI",
-  publisher: "YoflowAI",
+  authors: [{ name: "GenFlowAI Team" }],
+  creator: "GenFlowAI",
+  publisher: "GenFlowAI",
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
   openGraph: {
-    title: "YoflowAI | Intelligent Yoga Flow Generator",
+    title: "GenFlowAI | Intelligent Yoga Flow Generator",
     description: "Build your perfect yoga practice in seconds. AI-generated, personalized yoga flows tailored to your goals.",
-    url: "https://yoflow.app",
-    siteName: "YoflowAI",
+    url: "https://genflowai.app",
+    siteName: "GenFlowAI",
     images: [
       {
-        url: "https://yoflow.app/og-image.jpg",
+        url: "https://genflowai.app/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "YoflowAI - Intelligent Yoga Flow Generator",
+        alt: "GenFlowAI - Intelligent Yoga Flow Generator",
       },
     ],
     locale: "en_US",
@@ -46,9 +46,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "YoflowAI | Intelligent Yoga Flow Generator",
+    title: "GenFlowAI | Intelligent Yoga Flow Generator",
     description: "Build your perfect yoga practice in seconds. AI-generated, personalized yoga flows tailored to your goals.",
-    images: ["https://yoflow.app/og-image.jpg"],
+    images: ["https://genflowai.app/og-image.jpg"],
   },
   robots: {
     index: true,

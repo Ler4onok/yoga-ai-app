@@ -2,8 +2,8 @@ import { MetadataRoute } from 'next'
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'YoflowAI - Intelligent Yoga Flow Generator',
-    short_name: 'YoflowAI',
+    name: 'GenFlowAI - Intelligent Yoga Flow Generator',
+    short_name: 'GenFlowAI',
     description: 'Build your perfect yoga practice in seconds. AI-generated, personalized yoga flows.',
     start_url: '/',
     display: 'standalone',

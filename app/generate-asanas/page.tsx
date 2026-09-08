@@ -1,8 +1,11 @@
 "use client";
 
-import { useAction } from "convex/react";
+import { useAction, useQuery } from "convex/react";
+import { ConvexError } from "convex/values";
 import { api } from "@/convex/_generated/api";
 import React, { useState } from "react";
+import Link from "next/link";
+import { SignInButton } from "@clerk/nextjs";
 import YogaFilters, { YogaFormData } from "@/components/YogaFilters";
 import YogaFlowPreview from "@/components/YogaFlowPreview";
 import { getAsanaImage } from "@/lib/asanaMapper";
@@ -36,6 +39,11 @@ interface YogaFlow {
 }
 
 type UIState = "FILTERS" | "PREVIEW" | "RESULT";
+
+type GenerationError = {
+  kind: "auth" | "quota" | "generic";
+  message: string;
+};
 
 const SUN_SALUTATION_A = {
   title: "Sun Salutation A (Surya Namaskar A)",
@@ -86,13 +94,23 @@ const GenerateAsanas = () => {
   const [flow, setFlow] = useState<YogaFlow | null>(null);
   const [visibleAsanaCount, setVisibleAsanaCount] = useState(0);
   const generateAsanas = useAction(api.asanas.generate);
+  const usage = useQuery(api.users.getUsageStatus);
   const [activeSequence, setActiveSequence] = useState<"CUSTOM" | "SUN_A" | "SUN_B">("CUSTOM");
   const [showNotes, setShowNotes] = useState(true);
+  const [generationError, setGenerationError] = useState<GenerationError | null>(null);
+  const errorRef = React.useRef<HTMLDivElement | null>(null);
 
   // Scroll to top when switching between Sun Salutations and Custom flow, or when UI state changes
   React.useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [activeSequence, uiState]);
+
+  // Scroll the error banner into view whenever a generation error appears
+  React.useEffect(() => {
+    if (generationError) {
+      errorRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, [generationError]);
 
   const onFiltersSubmit = (data: YogaFormData) => {
     setFormData(data);
@@ -102,6 +120,7 @@ const GenerateAsanas = () => {
   const onConfirmGeneration = async (refinedData: YogaFormData) => {
     setFormData(refinedData);
     setIsSubmitting(true);
+    setGenerationError(null);
     setVisibleAsanaCount(0); // Reset for animation
     try {
       const response = await generateAsanas({
@@ -137,7 +156,28 @@ const GenerateAsanas = () => {
       }, 300); // 300ms delay between asanas
     } catch (error) {
       console.error("Error generating asanas:", error);
-      alert("Failed to generate asanas. Please try again.");
+      const message =
+        error instanceof ConvexError
+          ? typeof error.data === "string"
+            ? error.data
+            : ""
+          : error instanceof Error
+          ? error.message
+          : "";
+
+      if (message.includes("signed in") || message.includes("Unauthorized")) {
+        setGenerationError({
+          kind: "auth",
+          message: "Please sign in to generate a yoga flow.",
+        });
+      } else if (message.includes("generations")) {
+        setGenerationError({ kind: "quota", message });
+      } else {
+        setGenerationError({
+          kind: "generic",
+          message: "Failed to generate asanas. Please try again.",
+        });
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -159,6 +199,42 @@ const GenerateAsanas = () => {
             <p className="text-gray-600 font-medium text-lg max-w-2xl mx-auto">
               Design your ideal yoga session by selecting your intensity, style, and focus area. Our AI will craft a balanced, intelligent sequence tailored just for you.
             </p>
+            {usage && (
+              <p className="mt-4 text-xs font-black uppercase tracking-widest text-gray-400">
+                {usage.tier === "free"
+                  ? `${usage.remaining}/${usage.limit} free generations left`
+                  : `${usage.remaining}/${usage.limit} generations left this month`}
+                {usage.remaining === 0 && (
+                  <>
+                    {" — "}
+                    <Link href="/pricing" className="text-blue-600 hover:underline">Upgrade for more</Link>
+                  </>
+                )}
+              </p>
+            )}
+          </div>
+        )}
+
+        {generationError && (
+          <div
+            ref={errorRef}
+            className="mb-8 p-6 bg-red-50 border border-red-100 rounded-3xl text-center animate-in fade-in slide-in-from-top-2 duration-500"
+          >
+            <p className="text-sm font-semibold text-red-600 mb-3">{generationError.message}</p>
+            {generationError.kind === "auth" ? (
+              <SignInButton mode="modal">
+                <button className="inline-block px-6 py-2.5 bg-gray-900 text-white rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-black transition-all cursor-pointer">
+                  Sign In
+                </button>
+              </SignInButton>
+            ) : generationError.kind === "quota" ? (
+              <Link
+                href="/pricing"
+                className="inline-block px-6 py-2.5 bg-gray-900 text-white rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-black transition-all"
+              >
+                View Plans
+              </Link>
+            ) : null}
           </div>
         )}
 

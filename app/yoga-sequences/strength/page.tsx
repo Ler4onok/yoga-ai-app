@@ -4,10 +4,10 @@ import StaticSequenceViewer from "@/components/StaticSequenceViewer";
 import { STATIC_FLOWS } from "@/lib/staticFlows";
 
 export const metadata: Metadata = {
-  title: "60-Minute Ashtanga Strength Flow | Yoga Sequences | YoflowAI",
+  title: "60-Minute Ashtanga Strength Flow | Yoga Sequences | GenFlowAI",
   description: "Build deep core power and stability with this modified 60-minute Ashtanga primary sequence. Ideal for experienced practitioners looking for a safety-supported strength challenge.",
   alternates: {
-    canonical: "https://yoflow.app/yoga-sequences/strength"
+    canonical: "https://genflowai.app/yoga-sequences/strength"
   },
   keywords: [
     "ashtanga strength flow",
@@ -19,14 +19,14 @@ export const metadata: Metadata = {
     "heat building yoga"
   ],
   openGraph: {
-    title: "60-Minute Ashtanga Strength Flow | Yoga Sequences | YoflowAI",
+    title: "60-Minute Ashtanga Strength Flow | Yoga Sequences | GenFlowAI",
     description: "Build deep core power and stability with this modified 60-minute Ashtanga primary sequence.",
-    url: "https://yoflow.app/yoga-sequences/strength",
-    siteName: "YoflowAI",
+    url: "https://genflowai.app/yoga-sequences/strength",
+    siteName: "GenFlowAI",
   },
   twitter: {
     card: "summary_large_image",
-    title: "60-Minute Ashtanga Strength Flow | Yoga Sequences | YoflowAI",
+    title: "60-Minute Ashtanga Strength Flow | Yoga Sequences | GenFlowAI",
     description: "Build deep core power and stability with this modified 60-minute Ashtanga primary sequence.",
   }
 };

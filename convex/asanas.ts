@@ -1,5 +1,6 @@
 import { action } from "./_generated/server";
-import { v } from "convex/values";
+import { v, ConvexError } from "convex/values";
+import { internal } from "./_generated/api";
 
 
 export const generate = action({
@@ -22,6 +23,17 @@ export const generate = action({
         props: v.optional(v.array(v.string())),
     },
     handler: async (ctx, args) => {
+        const identity = await ctx.auth.getUserIdentity();
+        if (!identity) {
+            throw new ConvexError("Unauthorized: you must be signed in to generate a yoga flow.");
+        }
+
+        await ctx.runMutation(internal.users.ensureGenerationAllowed, {
+            clerkId: identity.subject,
+            email: identity.email ?? "",
+            name: identity.name ?? "",
+        });
+
         const apiKey = process.env.OPENROUTER_API_KEY;
         if (!apiKey) {
             throw new Error("OPENROUTER_API_KEY environment variable is not set");
@@ -207,6 +219,8 @@ export const generate = action({
                 })),
             };
         });
+
+        await ctx.runMutation(internal.users.recordGeneration, { clerkId: identity.subject });
 
         return {
             practiceOpener: flow.practiceOpener,

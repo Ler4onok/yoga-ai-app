@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = 'https://yoflow.app'
+  const baseUrl = 'https://genflowai.app'
 
   return {
     rules: {

@@ -4,10 +4,10 @@ import StaticSequenceViewer from "@/components/StaticSequenceViewer";
 import { STATIC_FLOWS } from "@/lib/staticFlows";
 
 export const metadata: Metadata = {
-  title: "60-Minute Yin Flexibility Flow | Yoga Sequences | YoflowAI",
+  title: "60-Minute Yin Flexibility Flow | Yoga Sequences | GenFlowAI",
   description: "A passive, deep 60-minute Yin yoga sequence focusing on flexibility, hips, and hamstrings. Experience long-held poses like Butterfly and Dragon for ultimate recovery.",
   alternates: {
-    canonical: "https://yoflow.app/yoga-sequences/flexibility"
+    canonical: "https://genflowai.app/yoga-sequences/flexibility"
   },
   keywords: [
     "yin flexibility flow",
@@ -19,14 +19,14 @@ export const metadata: Metadata = {
     "connective tissue stretch"
   ],
   openGraph: {
-    title: "60-Minute Yin Flexibility Flow | Yoga Sequences | YoflowAI",
+    title: "60-Minute Yin Flexibility Flow | Yoga Sequences | GenFlowAI",
     description: "A passive, deep 60-minute Yin yoga sequence focusing on flexibility, hips, and hamstrings.",
-    url: "https://yoflow.app/yoga-sequences/flexibility",
-    siteName: "YoflowAI",
+    url: "https://genflowai.app/yoga-sequences/flexibility",
+    siteName: "GenFlowAI",
   },
   twitter: {
     card: "summary_large_image",
-    title: "60-Minute Yin Flexibility Flow | Yoga Sequences | YoflowAI",
+    title: "60-Minute Yin Flexibility Flow | Yoga Sequences | GenFlowAI",
     description: "A passive, deep 60-minute Yin yoga sequence focusing on flexibility, hips, and hamstrings.",
   }
 };
