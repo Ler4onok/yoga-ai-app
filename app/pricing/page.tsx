@@ -29,6 +29,7 @@ const CheckIcon = () => (
 export default function PricingPage() {
   const { isSignedIn } = useUser();
   const usage = useQuery(api.users.getUsageStatus);
+  console.log({usage})
   const createCheckoutSession = useAction(api.subscriptions.createCheckoutSession);
   const createPortalSession = useAction(api.subscriptions.createPortalSession);
   const [loadingTier, setLoadingTier] = useState<TierId | null>(null);

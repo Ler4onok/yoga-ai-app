@@ -1,7 +1,7 @@
 const auth = {
   providers: [
     {
-      domain: "https://ethical-python-46.clerk.accounts.dev",
+      domain: "https://clerk.yoflow.app",
       applicationID: "convex",
     },
   ],
