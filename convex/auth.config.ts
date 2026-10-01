@@ -1,7 +1,7 @@
 const auth = {
   providers: [
     {
-      domain: "https://clerk.yoflow.app",
+      domain: "https://clerk.genflowai.app",
       applicationID: "convex",
     },
   ],
